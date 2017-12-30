@@ -5,13 +5,12 @@ import {submitText} from '../../actions/signForm';
 
 import UI from '../../components/ui';
 
-class LoginForm extends Component {
+class MarketSummary extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: ''
+            inputValue: ''
         };
     }
 
@@ -22,8 +21,6 @@ class LoginForm extends Component {
      */
     _handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state.username);
-        console.log(this.state.password);
         this.props.submitText(this.state.inputValue);
         this.setState({inputValue: ''});
     }
@@ -33,7 +30,7 @@ class LoginForm extends Component {
      * @param {e} e eventhandler
      */
     _handleChange(e) {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({inputValue: e.target.value});
     }
 
     /**
@@ -58,19 +55,13 @@ class LoginForm extends Component {
                     Login
                   </section>
                   <section className='login-form-box-body'>
-                    <UI.Input
-                    type='text'
-                    name='username'
-                    value={this.state.username}
+                    <input
+                    value={this.state.inputValue}
                     onChange={this._handleChange.bind(this)}/>
-                    <UI.Input
-                      type='text'
-                      name='password'
-                      value={this.state.password}
+                    <input
+                      value={this.state.inputValue}
                       onChange={this._handleChange.bind(this)}/>
-                    <UI.Input
-                      type='submit'
-                      value='Submit'/>
+                    <UI.Button className="button">Submit</UI.Button>
                     <p className='forgot-password'> forgot password? </p>
                   </section>
                 </form>
@@ -100,4 +91,4 @@ const matchDispatchToProps = dispatch =>
 
 
 // Bind actions, states and component to the store
-export default connect(matchStateToProps, matchDispatchToProps)(LoginForm);
+export default connect(matchStateToProps, matchDispatchToProps)(MarketSummary);
