@@ -1,7 +1,7 @@
 const UI = {};
 
 
-import {StandardButton} from './button/button.js';
+import {StandardButton} from './button';
 UI.Button = StandardButton;
 
 

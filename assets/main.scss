@@ -1,27 +1,11 @@
 @import 'reset.scss';
 @import 'globals/variables.scss';
 @import 'components/ui/index.scss';
+@import 'pages/index.scss';
 
 html {
     font-size: 62.5%;
-    @media (min-width: 30em) {
-        font-size: 100%;
-    }
-}
-
-/**need to delete later **/
-
-a, form {
-    margin:50px;
-}
-
-textarea {
-    height: 100px;
-    width: 300px;
-    font-size: 24px;
-}
-
-.display {
-    font-size: 24px;
-    margin: 10px 50px;
+    // @media (min-width: 30em) {
+    //     font-size: 100%;
+    // }
 }

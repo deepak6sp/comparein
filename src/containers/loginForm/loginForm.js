@@ -49,20 +49,23 @@ class SignForm extends Component {
 
     render() {
         return (
-            <div className='dashboard'>
-                <form onSubmit={this._handleSubmit.bind(this)} >
-                    <textarea
-                    id='message'
-                    placeholder='Enter msg here'
-                    className='form-control'
-                    rows='3'
+            <main className='login-form-page'>
+                <form className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
+                  <section className='login-form-box-header'>
+                    Login
+                  </section>
+                  <section className='login-form-box-body'>
+                    <input
                     value={this.state.inputValue}
-                    onChange={this._handleChange.bind(this)}>
-                    </textarea><br/>
+                    onChange={this._handleChange.bind(this)}/>
+                    <input
+                      value={this.state.inputValue}
+                      onChange={this._handleChange.bind(this)}/>
                     <UI.Button className="button">Submit</UI.Button>
+                    <p className='forgot-password'> forgot password? </p>
+                  </section>
                 </form>
-                {this.displayText()}
-            </div>
+            </main>
         );
     }
 }
