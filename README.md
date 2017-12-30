@@ -1,3 +1,1 @@
-This is React/Redux project starter template/seed.
-
-Switch branch to get typescript
+Comparein web application react, express and mongodb.
