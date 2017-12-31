@@ -3,6 +3,6 @@ $font-main : 1.6rem;
 
 // colors
 
-$color-primary: #50E3C2;
+$color-primary: #4DB6AC;
 $box-shadow-color: rgba(161,150,150,0.50);
-$green-light: lighten(#50E3C2, 30%);
+$green-light: lighten($color-primary, 40%);

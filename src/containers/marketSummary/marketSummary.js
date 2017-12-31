@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {submitText} from '../../actions/signForm';
+import {getPremiumWins} from '../../actions/marketSummary';
+import createPlotlyComponent from 'react-plotly.js/factory';
+import Plotly from 'plotly.js/dist/plotly-cartesian';
+const Plot = createPlotlyComponent(Plotly);
 
 import UI from '../../components/ui';
 
@@ -14,59 +17,25 @@ class MarketSummary extends Component {
         };
     }
 
-    /**
-     * This is a controlled form component.
-     * It will dispatch inputValue to actions, on form submit
-     * @param {e} e eventhandler
-     */
-    _handleSubmit(e) {
-        e.preventDefault();
-        this.props.submitText(this.state.inputValue);
-        this.setState({inputValue: ''});
-    }
-
-    /**
-     * Updates the state on input value
-     * @param {e} e eventhandler
-     */
-    _handleChange(e) {
-        this.setState({inputValue: e.target.value});
-    }
-
-    /**
-     * Gets the new state of the newText array from reducer
-     * and displays new Text
-     * @return {DOM} appends new Dom with newText
-     */
-    displayText() {
-        if (this.props.newText) {
-            return this.props.newText.map((element, index) =>
-                 <div className="display" key={index}>{element}</div>
-            );
-        }
-
+    componentDidMount() {
+      this.props.getPremiumWins();
     }
 
     render() {
+      console.log(this.props.newSummary[0]);
+      if(this.props.newSummary.length != 0) {
+        let ns = this.props.newSummary[0];
+        console.log(ns[0]);
         return (
-            <main className='login-form-page'>
-                <form className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
-                  <section className='login-form-box-header'>
-                    Login
-                  </section>
-                  <section className='login-form-box-body'>
-                    <input
-                    value={this.state.inputValue}
-                    onChange={this._handleChange.bind(this)}/>
-                    <input
-                      value={this.state.inputValue}
-                      onChange={this._handleChange.bind(this)}/>
-                    <UI.Button className="button">Submit</UI.Button>
-                    <p className='forgot-password'> forgot password? </p>
-                  </section>
-                </form>
-            </main>
+          <main className='market-summary-page'>
+              <Plot
+                  data={[ ns[0] ]}
+              />
+          </main>
         );
+      } else {
+        return <h1> No graph data </h1>
+      }
     }
 }
 
@@ -77,7 +46,7 @@ class MarketSummary extends Component {
  * @param  {array} state array retrieved from reducer
  * @return {Object}      Object retrived from new state
  */
-const matchStateToProps = state => ({newText: state.newtext});
+const matchStateToProps = state => ({newSummary: state.newSummary});
 
 
 /**
@@ -87,7 +56,7 @@ const matchStateToProps = state => ({newText: state.newtext});
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({submitText}, dispatch);
+    bindActionCreators({getPremiumWins}, dispatch);
 
 
 // Bind actions, states and component to the store

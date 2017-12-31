@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import SignFormReducer from './signForm';
+import MarketSummaryReducer from './marketSummary';
 
 const MainReducer = combineReducers({
-    newtext: SignFormReducer
+    newSummary: MarketSummaryReducer
 });
 
 export default MainReducer;
