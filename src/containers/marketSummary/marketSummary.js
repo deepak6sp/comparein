@@ -50,6 +50,9 @@ class MarketSummary extends Component {
                     tickFormat={(x) => (`${x}`)}
                   />
                   <VictoryBar
+                    style={{
+                              data: { fill: "#4DB6AC", width: 25 }
+                            }}
                       data = {data}
                       x="brand"
                       y="wins"/>
