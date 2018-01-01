@@ -3,9 +3,17 @@
   background: #def1ef;
   height: calc(100vh - 10rem);
   justify-content: center;
-  .graph-container {
-    width: 100%;
-    max-height: 50rem;
+  .market-summary-wrapper {
+    max-width: 60rem;
+    .graph-container {
+      .VictoryContainer {
+        width: 100%;
+      }
+    }
+    .market-summary-text {
+      h3 {
+        margin-top: 2rem;
+      }
+    }
   }
-
 }

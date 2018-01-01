@@ -6,3 +6,15 @@ $font-main : 1.6rem;
 $color-primary: #4DB6AC;
 $box-shadow-color: rgba(161,150,150,0.50);
 $green-light: lighten($color-primary, 40%);
+
+
+h3 {
+  color: $color-primary;
+  font-size: 3rem;
+  padding: 1rem 0rem;
+}
+
+p {
+  font-size: $font-main;
+  line-height: 2rem;
+}

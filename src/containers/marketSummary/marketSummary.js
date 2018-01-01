@@ -38,22 +38,33 @@ class MarketSummary extends Component {
 
         return (
           <main className='market-summary-page'>
-            <section className='graph-container'>
-              <VictoryChart domainPadding={20}>
-                <VictoryAxis
-                  tickValues={count}
-                  tickFormat={brandNames}
-                />
-                <VictoryAxis
-                  dependentAxis
-                  tickFormat={(x) => (`${x}`)}
-                />
-                <VictoryBar
-                    data = {data}
-                    x="brand"
-                    y="wins"/>
-              </VictoryChart>
-            </section>
+            <div className='market-summary-wrapper'>
+              <section className='graph-container'>
+                <VictoryChart domainPadding={20} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  <VictoryAxis
+                    tickValues={count}
+                    tickFormat={brandNames}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    tickFormat={(x) => (`${x}`)}
+                  />
+                  <VictoryBar
+                      data = {data}
+                      x="brand"
+                      y="wins"/>
+                </VictoryChart>
+              </section>
+              <section className='market-summary-text'>
+                <h3>Market Summary</h3>
+                <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type
+                specimen book. It has survived not only five centuries, but also the leap into
+                electronic typesetting, remaining essentially unchanged.
+                </p>
+              </section>
+            </div>
           </main>
         );
       } else {
