@@ -22,14 +22,17 @@ class MarketSummary extends Component {
     }
 
     render() {
-      console.log(this.props.newSummary[0]);
       if(this.props.newSummary.length != 0) {
-        let ns = this.props.newSummary[0];
-        console.log(ns[0]);
+        let resultX=[];
+        let resultY=[];
+        this.props.newSummary[0].forEach((ele,i) => {
+          resultX.push(ele.brand);
+          resultY.push(ele.wins);
+        });
         return (
           <main className='market-summary-page'>
               <Plot
-                  data={[ ns[0] ]}
+                  data={[{x: resultX, y: resultY, type: 'bar'}]}
               />
           </main>
         );
