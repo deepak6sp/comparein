@@ -5,6 +5,7 @@ import {getPremiumWins} from '../../actions/marketSummary';
 import createPlotlyComponent from 'react-plotly.js/factory';
 import Plotly from 'plotly.js/dist/plotly-cartesian';
 const Plot = createPlotlyComponent(Plotly);
+import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
 
@@ -22,18 +23,37 @@ class MarketSummary extends Component {
     }
 
     render() {
+      console.log(this.props.newSummary.length);
+      console.log(this.props.newSummary);
+
       if(this.props.newSummary.length != 0) {
-        let resultX=[];
-        let resultY=[];
+        let data = [];
+        let brandNames = [];
+        let count = [];
         this.props.newSummary[0].forEach((ele,i) => {
-          resultX.push(ele.brand);
-          resultY.push(ele.wins);
-        });
+          brandNames.push(ele.brand);
+          count.push(i+1);
+          data.push({'brand':i+1,'wins':ele.wins})
+        })
+
         return (
           <main className='market-summary-page'>
-              <Plot
-                  data={[{x: resultX, y: resultY, type: 'bar'}]}
-              />
+            <section className='graph-container'>
+              <VictoryChart domainPadding={20}>
+                <VictoryAxis
+                  tickValues={count}
+                  tickFormat={brandNames}
+                />
+                <VictoryAxis
+                  dependentAxis
+                  tickFormat={(x) => (`${x}`)}
+                />
+                <VictoryBar
+                    data = {data}
+                    x="brand"
+                    y="wins"/>
+              </VictoryChart>
+            </section>
           </main>
         );
       } else {

@@ -3,5 +3,9 @@
   background: #def1ef;
   height: calc(100vh - 10rem);
   justify-content: center;
+  .graph-container {
+    width: 100%;
+    max-height: 50rem;
+  }
 
 }
