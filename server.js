@@ -12,6 +12,7 @@ require('./server/database');
 
 const clientRouter = require('./server/routes/client');
 const apiRouter = require('./server/routes/api');
+const adminRouter = require('./server/routes/admin');
 
 app.use(require('webpack-dev-middleware')(compiler));
 app.use(require('webpack-hot-middleware')(compiler));
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', clientRouter);
 
 app.use('/api', apiRouter);
+app.use('/admin', adminRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));

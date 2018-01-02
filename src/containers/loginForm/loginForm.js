@@ -10,7 +10,8 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loginType: props.loginType
         };
     }
 
@@ -23,7 +24,11 @@ class LoginForm extends Component {
         e.preventDefault();
         console.log(this.state.username);
         console.log(this.state.password);
-        window.location = '/market-summary';
+        if(this.state.loginType == 'admin') {
+          window.location = '/users';
+        } else {
+          window.location = '/market-summary';
+        }
     }
 
     /**
@@ -37,11 +42,12 @@ class LoginForm extends Component {
 
 
     render() {
+      console.log(!this.state.loginType);
         return (
             <main className='login-form-page'>
                 <form className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
                   <section className='login-form-box-header'>
-                    Login
+                    {this.state.loginType} Login
                   </section>
                   <section className='login-form-box-body'>
                     <UI.Input
@@ -57,7 +63,9 @@ class LoginForm extends Component {
                     <UI.Input
                       type='submit'
                       value='Submit'/>
-                    <p className='forgot-password'> forgot password? </p>
+                    {(!this.state.loginType) &&
+                      <p className='forgot-password'> forgot password? </p>
+                    }
                   </section>
                 </form>
             </main>

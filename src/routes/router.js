@@ -13,6 +13,7 @@ const Router = () =>
           <Header/>
           <Route path="/login" component={ () => <LoginForm/> }/>
           <Route path="/market-summary" component={() => <MarketSummary/> } />
+          <Route path="/admin" component={() => <LoginForm loginType='admin'/> } />
        </div>
     </BrowserRouter>;
 
