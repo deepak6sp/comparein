@@ -20,6 +20,8 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
 app.use('/', clientRouter);
 
 app.use('/api', apiRouter);

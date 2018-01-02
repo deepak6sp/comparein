@@ -1,24 +1,16 @@
 const path = require('path');
 const express = require('express');
 
-var apiRouter =  express.Router();
+var adminRouter =  express.Router();
 var conn = require('../database');
 
-var resultX=[];
-var resultY=[];
-var result;
-conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
-conn.on('open', function () {
-  conn.db.collection('premiumWins', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      result = docs;
-    });
 
-  });
+adminRouter.all('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
-apiRouter.get('/getPremiumWins', (req, res) => {
-  res.send(result);
-});
+// adminRouter.get('/users', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../../index.html'));
+// });
 
-module.exports = apiRouter;
+module.exports = adminRouter;

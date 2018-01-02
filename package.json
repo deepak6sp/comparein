@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --progress --colors --config webpack.config.prod.js",
     "start": "webpack-dev-server --hot --inline --config webpack.config.dev.js  --content-base ./ ",
-    "server": "nodemon server.js",
+    "server": "nodemon server.js --exec babel-tape-runner --ignore src/ ",
     "test": "mocha --require test_helper.js --compilers js:babel-register --recursive ./src/**/*-spec.js",
     "test:watch": "npm test -- --watch",
     "test-coverage": "istanbul cover _mocha -- --require test_helper.js --compilers js:babel-register --recursive ./src/**/*-spec.js",
@@ -15,6 +15,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "mongoose": "^5.0.0-rc0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "plotly.js": "^1.31.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
@@ -32,6 +34,7 @@
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-tape-runner": "^2.0.1",
     "body-parser": "^1.18.2",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.6.1",

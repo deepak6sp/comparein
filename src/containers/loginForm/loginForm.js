@@ -24,11 +24,36 @@ class LoginForm extends Component {
         e.preventDefault();
         console.log(this.state.username);
         console.log(this.state.password);
-        if(this.state.loginType == 'admin') {
-          window.location = '/users';
-        } else {
-          window.location = '/market-summary';
-        }
+        //document.getElementById('login-form-box').submit();
+        let formData = new FormData();
+        // formData.append('username', this.state.username);
+        // formData.append('password', this.state.password);
+
+        formData.username = this.state.username;
+        formData.password = this.state.password;
+
+        fetch("/login", {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(res => res.json())
+        .then(res => {
+          if(res.found) {
+            window.location = '/market-summary';
+          } else {
+            window.location = '/admin/users';
+          }
+        })
+
+        // if(this.state.loginType == 'admin') {
+        //   window.location = '/admin/users';
+        // } else {
+        //   window.location = '/market-summary';
+        // }
     }
 
     /**
@@ -45,7 +70,7 @@ class LoginForm extends Component {
       console.log(!this.state.loginType);
         return (
             <main className='login-form-page'>
-                <form className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
+                <form id='login-form-box' className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
                   <section className='login-form-box-header'>
                     {this.state.loginType} Login
                   </section>

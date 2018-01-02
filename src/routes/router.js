@@ -13,8 +13,15 @@ const Router = () =>
           <Header/>
           <Route path="/login" component={ () => <LoginForm/> }/>
           <Route path="/market-summary" component={() => <MarketSummary/> } />
-          <Route path="/admin" component={() => <LoginForm loginType='admin'/> } />
+          <Route path="/admin" component={Admin} />
        </div>
     </BrowserRouter>;
 
+
+const Admin = ({ match }) => (
+  <div>
+      <Route exact path={match.url} component={() => <LoginForm loginType='admin'/> } />
+      <Route path={`${match.url}/users`} component={() => <LoginForm loginType='admin'/> }/>
+  </div>
+)
 export default Router;
