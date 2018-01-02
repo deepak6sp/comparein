@@ -1,11 +1,9 @@
 const path = require('path');
 const express = require('express');
 
-var apiRouter =  express.Router();
-var conn = require('../database');
+const apiRouter =  express.Router();
+const conn = require('../database');
 
-var resultX=[];
-var resultY=[];
 var result;
 conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
