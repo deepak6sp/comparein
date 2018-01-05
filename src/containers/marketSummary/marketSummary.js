@@ -8,13 +8,15 @@ const Plot = createPlotlyComponent(Plotly);
 import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
+import PopUp from '../../components/ui/popup';
 
 class MarketSummary extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: ''
+            inputValue: '',
+            openPopUp: true
         };
     }
 
@@ -22,56 +24,84 @@ class MarketSummary extends Component {
       this.props.getPremiumWins();
     }
 
+    _handleClick() {
+      this.setState({openPopUp: false});
+    }
+
     render() {
-      console.log(this.props.newSummary.length);
-      console.log(this.props.newSummary);
 
-      if(this.props.newSummary.length != 0) {
-        let data = [];
-        let brandNames = [];
-        let count = [];
-        this.props.newSummary[0].forEach((ele,i) => {
-          brandNames.push(ele.brand);
-          count.push(i+1);
-          data.push({'brand':i+1,'wins':ele.wins})
-        })
+      if(!this.state.openPopUp) {
+        if(this.props.newSummary.length != 0) {
+          let data = [];
+          let brandNames = [];
+          let count = [];
 
+          this.props.newSummary[0].forEach((ele,i) => {
+            brandNames.push(ele.brand);
+            count.push(i+1);
+            data.push({'brand':i+1,'wins':ele.wins})
+          })
+
+          return (
+            <main className='market-summary-page'>
+              <div className='market-summary-wrapper'>
+                <section className='graph-container'>
+                  <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                    <VictoryAxis
+                      tickValues={count}
+                      tickFormat={brandNames}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      tickFormat={(x) => (`${x}`)}
+                    />
+                    <VictoryBar
+                      style={{
+                                data: { fill: "#4DB6AC", width: 40 }
+                              }}
+                        data = {data}
+                        x="brand"
+                        y="wins"/>
+                  </VictoryChart>
+                </section>
+                <section className='market-summary-text'>
+                  <h3>Market Summary</h3>
+                  <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                  when an unknown printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but also the leap into
+                  electronic typesetting, remaining essentially unchanged.
+                  </p>
+                </section>
+              </div>
+            </main>
+          );
+        }
+      } else {
         return (
           <main className='market-summary-page'>
-            <div className='market-summary-wrapper'>
-              <section className='graph-container'>
-                <VictoryChart domainPadding={20} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
-                  <VictoryAxis
-                    tickValues={count}
-                    tickFormat={brandNames}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    tickFormat={(x) => (`${x}`)}
-                  />
-                  <VictoryBar
-                    style={{
-                              data: { fill: "#4DB6AC", width: 25 }
-                            }}
-                      data = {data}
-                      x="brand"
-                      y="wins"/>
-                </VictoryChart>
-              </section>
-              <section className='market-summary-text'>
-                <h3>Market Summary</h3>
-                <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type
-                specimen book. It has survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged.
-                </p>
-              </section>
-            </div>
+            <form id='state-and-product'>
+              <PopUp handleClick={this._handleClick.bind(this)}>
+
+                  <section className='select-state'>
+                    <h4>Select state</h4>
+                  </section>
+
+                  <section className='select-product'>
+                    <h4>Select Product</h4>
+                    <div className='input-group'>
+                      <input id="home" name="home" type="checkbox" className="hidden"/>
+                      <label htmlFor="home">Home and Content</label>
+
+                      <input id="car" name="car" type="checkbox" className="hidden"/>
+                      <label htmlFor="car">Car</label>
+                    </div>
+                  </section>
+
+              </PopUp>
+            </form>
           </main>
         );
-      } else {
-        return <h1> No graph data </h1>
       }
     }
 }

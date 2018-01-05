@@ -16,4 +16,35 @@
       }
     }
   }
+
+  #state-and-product {
+    .overlay-content {
+        display: flex;
+        flex-direction: column;
+        label {
+          color: white;
+          padding: 2rem;
+          margin: 0rem 5rem;
+          min-width: 10rem;
+          &:hover {
+            background: white;
+            color: black;
+          }
+        }
+        .select-product {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-top: 5rem;
+          .input-group {
+            margin: 2rem;
+            display: flex;
+            justify-content: center;
+          }
+        }
+    }
+    h4{
+      color: white;
+    }
+  }
 }
