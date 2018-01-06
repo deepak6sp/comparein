@@ -4,7 +4,8 @@ const express = require('express');
 const apiRouter =  express.Router();
 const conn = require('../database');
 
-var premiumWinsResult, ageWinsResult;
+var premiumWinsResult, ageWinsResult, getAgeWinsResult;
+
 conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
   conn.db.collection('premiumWins', function(err, coll) {
@@ -24,10 +25,9 @@ apiRouter.get('/getPremiumWins', (req, res) => {
 });
 
 apiRouter.post('/getAgeWins', (req, res) => {
-  console.log(req);
-  var results = ageWinsResult.filter(value => value.brand == "AAMI");
-  //console.log(results);
-  res.send(results);
+  getAgeWinsResult = ageWinsResult.filter(value => value.brand == req.body.brandName);
+}).get('/getAgeWins', (req, res) => {
+  res.send(getAgeWinsResult);
 });
 
 module.exports = apiRouter;
