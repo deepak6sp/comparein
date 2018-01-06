@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getPremiumWins} from '../../actions/marketSummary';
-import createPlotlyComponent from 'react-plotly.js/factory';
-import Plotly from 'plotly.js/dist/plotly-cartesian';
-const Plot = createPlotlyComponent(Plotly);
+import {getPremiumWins, getAgeWins} from '../../actions/marketSummary';
 import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
@@ -24,8 +21,14 @@ class MarketSummary extends Component {
       this.props.getPremiumWins();
     }
 
-    _handleClick() {
+    _handlePopUpClose() {
       this.setState({openPopUp: false});
+    }
+
+    _handleSelectedBrand(name) {
+      console.log(name);
+      this.props.getAgeWins(name);
+      //window.location = '/brand-specific';
     }
 
     render() {
@@ -39,7 +42,7 @@ class MarketSummary extends Component {
           this.props.newSummary[0].forEach((ele,i) => {
             brandNames.push(ele.brand);
             count.push(i+1);
-            data.push({'brand':i+1,'wins':ele.wins})
+            data.push({'brand':ele.brand,'wins':ele.wins})
           })
 
           return (
@@ -61,7 +64,33 @@ class MarketSummary extends Component {
                               }}
                         data = {data}
                         x="brand"
-                        y="wins"/>
+                        y="wins"
+                        events={[{
+                          target: "data",
+                          eventHandlers: {
+                            onClick: () => {
+                              return [{
+                                mutation: (props) => {
+                                  this._handleSelectedBrand(props.datum.brand);
+                                }
+                              }];
+                            },
+                            onMouseEnter: () => {
+                              return [{
+                                mutation: (props) => {
+                                  return {style: Object.assign(props.style, {fill: "#1f4b47"})}
+                                }
+                              }];
+                            },
+                            onMouseLeave: () => {
+                              return [{
+                                mutation: (props) => {
+                                  return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
+                                }
+                              }];
+                            }
+                          }
+                        }]} />
                   </VictoryChart>
                 </section>
                 <section className='market-summary-text'>
@@ -81,7 +110,7 @@ class MarketSummary extends Component {
         return (
           <main className='market-summary-page'>
             <form id='state-and-product'>
-              <PopUp handleClick={this._handleClick.bind(this)}>
+              <PopUp handlePopUpClose={this._handlePopUpClose.bind(this)}>
 
                   <section className='select-state'>
                     <h4>Select state</h4>
@@ -123,7 +152,7 @@ const matchStateToProps = state => ({newSummary: state.newSummary});
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({getPremiumWins}, dispatch);
+    bindActionCreators({getPremiumWins, getAgeWins}, dispatch);
 
 
 // Bind actions, states and component to the store
