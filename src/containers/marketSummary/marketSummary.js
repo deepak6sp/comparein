@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getPremiumWins, getAgeWins} from '../../actions/marketSummary';
+import {getPremiumWins} from '../../actions/marketSummary';
 import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
@@ -27,8 +27,8 @@ class MarketSummary extends Component {
 
     _handleSelectedBrand(name) {
       console.log(name);
-      this.props.getAgeWins(name);
-      //window.location = '/brand-specific';
+      //this.props.generateAgeWinsApi(name);
+      window.location = '/brand-specific/'+name;
     }
 
     render() {
@@ -152,7 +152,7 @@ const matchStateToProps = state => ({newSummary: state.newSummary});
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({getPremiumWins, getAgeWins}, dispatch);
+    bindActionCreators({getPremiumWins}, dispatch);
 
 
 // Bind actions, states and component to the store

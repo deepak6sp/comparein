@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getPremiumWins} from '../../actions/marketSummary';
+import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
 import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
@@ -17,13 +17,15 @@ class BrandSpecific extends Component {
     }
 
     componentDidMount() {
-      this.props.getPremiumWins();
+      this.props.generateAgeWinsApi(this.props.brandName);
+      this.props.getAgeWins(this.props.brandName);
     }
 
     render() {
+      console.log(this.props.brandSpecificDetails);
       return (
         <main className='brand-specific-page'>
-this is branch specific page
+        aasds
         </main>
       );
     }
@@ -36,7 +38,7 @@ this is branch specific page
  * @param  {array} state array retrieved from reducer
  * @return {Object}      Object retrived from new state
  */
-const matchStateToProps = state => ({newSummary: state.newSummary});
+const matchStateToProps = state => ({brandSpecificDetails: state.brandSpecificDetails});
 
 
 /**
@@ -46,7 +48,7 @@ const matchStateToProps = state => ({newSummary: state.newSummary});
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({getPremiumWins}, dispatch);
+    bindActionCreators({generateAgeWinsApi, getAgeWins}, dispatch);
 
 
 // Bind actions, states and component to the store

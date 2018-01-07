@@ -11,9 +11,6 @@ export default function(state = [], action) {
         case 'GET_PREMIUM_WINS':
             return [...state, action.payload];
             break;
-        case 'GET_AGE_WINS':
-            return [...state, action.payload];
-            break;
         default:
             return state;
     }
