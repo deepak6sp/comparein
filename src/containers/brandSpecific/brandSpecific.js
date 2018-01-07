@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
-import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis,
+import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
@@ -59,18 +59,11 @@ class BrandSpecific extends Component {
                     tickFormat={(x) => (`${x}`)}
                 />
                 <VictoryGroup>
-                  <VictoryLine
-                    style={{
-                      data: { stroke: "#c43a31" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
+
                   <VictoryStack>
                     <VictoryBar
                       style={{
-                        data: { width: 40 }
+                        data: { fill: "#1f4b47", width: 40 }
                       }}
                       data={numberOfQuotes}
                       x="count"
@@ -79,15 +72,36 @@ class BrandSpecific extends Component {
 
                     <VictoryBar
                       style={{
-                        data: { width: 40 }
+                        data: { fill: "#4DB6AC", width: 40 }
                       }}
                       data={numberOfWins}
                       x="count"
                       y="wins"
                     />
                   </VictoryStack>
+                  <VictoryLine
+                    style={{
+                      data: { stroke: "#c43a31" },
+                    }}
+                    data={quotedPremium}
+                    x="count"
+                    y="quotedPremium"
+                  />
+                  <VictoryScatter
+                    style={{
+                      data: { fill: "#000000" },
+                    }}
+                    data={quotedPremium}
+                    x="count"
+                    y="quotedPremium"
+                  />
                 </VictoryGroup>
               </VictoryChart>
+              <div className='graph-label-desc'>
+                <div className="red">Quoted Premium</div>
+                <div className="green-primary">Number Of Quotes</div>
+                <div className="green-dark">Number Of Wins</div>
+              </div>
             </section>
           </div>
         </main>
