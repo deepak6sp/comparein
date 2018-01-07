@@ -1,0 +1,13 @@
+.brand-specific-page {
+  display: flex;
+  background: $green-light;
+  min-height: calc(100vh - 10rem);
+  justify-content: center;
+  .brand-specific-wrapper {
+    .graph-container {
+      .VictoryContainer {
+        width: 100%;
+      }
+    }
+  }
+}

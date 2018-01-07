@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getPremiumWins} from '../../actions/marketSummary';
-import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
+import { VictoryChart, VictoryGroup, VictoryLine, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
 import PopUp from '../../components/ui/popup';
@@ -12,7 +12,6 @@ class MarketSummary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: '',
             openPopUp: true
         };
     }
@@ -35,15 +34,19 @@ class MarketSummary extends Component {
 
       if(!this.state.openPopUp) {
         if(this.props.newSummary.length != 0) {
-          let data = [];
+          let numberOfWins = [];
           let brandNames = [];
-          let count = [];
+          let numberOfDisplayBars = [];
+          let premium = [];
 
           this.props.newSummary[0].forEach((ele,i) => {
             brandNames.push(ele.brand);
-            count.push(i+1);
-            data.push({'brand':ele.brand,'wins':ele.wins})
+            numberOfDisplayBars.push(i++);
+            numberOfWins.push({'brand':ele.brand,'wins':ele.wins});
+            premium.push({'brand':ele.brand,'premium':ele.premium});
           })
+
+          console.log(premium);
 
           return (
             <main className='market-summary-page'>
@@ -51,46 +54,54 @@ class MarketSummary extends Component {
                 <section className='graph-container'>
                   <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                     <VictoryAxis
-                      tickValues={count}
+                      tickValues={numberOfDisplayBars}
                       tickFormat={brandNames}
                     />
                     <VictoryAxis
                       dependentAxis
                       tickFormat={(x) => (`${x}`)}
                     />
-                    <VictoryBar
-                      style={{
-                                data: { fill: "#4DB6AC", width: 40 }
-                              }}
-                        data = {data}
+                      <VictoryLine
+                        style={{
+                          data: { stroke: "#c43a31" },
+                        }}
+                        data={premium}
                         x="brand"
-                        y="wins"
-                        events={[{
-                          target: "data",
-                          eventHandlers: {
-                            onClick: () => {
-                              return [{
-                                mutation: (props) => {
-                                  this._handleSelectedBrand(props.datum.brand);
-                                }
-                              }];
-                            },
-                            onMouseEnter: () => {
-                              return [{
-                                mutation: (props) => {
-                                  return {style: Object.assign(props.style, {fill: "#1f4b47"})}
-                                }
-                              }];
-                            },
-                            onMouseLeave: () => {
-                              return [{
-                                mutation: (props) => {
-                                  return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
-                                }
-                              }];
+                        y="premium"
+                      />
+                      <VictoryBar
+                          style={{
+                            data: { fill: "#4DB6AC", width: 40 }
+                          }}
+                          data={numberOfWins}
+                          x="brand"
+                          y="wins"
+                          events={[{
+                            target: "data",
+                            eventHandlers: {
+                              onClick: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    this._handleSelectedBrand(props.datum.brand);
+                                  }
+                                }];
+                              },
+                              onMouseEnter: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#1f4b47"})}
+                                  }
+                                }];
+                              },
+                              onMouseLeave: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
+                                  }
+                                }];
+                              }
                             }
-                          }
-                        }]} />
+                          }]} />
                   </VictoryChart>
                 </section>
                 <section className='market-summary-text'>

@@ -3,7 +3,8 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
-import { VictoryChart, VictoryBar, VictoryAxis } from 'victory';
+import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis,
+        VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
 import PopUp from '../../components/ui/popup';
@@ -23,9 +24,72 @@ class BrandSpecific extends Component {
 
     render() {
       console.log(this.props.brandSpecificDetails);
+      let numberOfQuotes = [];
+      let numberOfWins = [];
+      let XaxisDisplayText = [];
+      let numberOfDisplayBars = [];
+      let quotedPremium = [];
+      if(this.props.brandSpecificDetails.length > 0) {
+        this.props.brandSpecificDetails[0].map((ele, i) => {
+          numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
+          numberOfWins.push({"count": i, "wins": ele.wins});
+          quotedPremium.push({"count": i, "quotedPremium": ele.quotedPremium});
+          XaxisDisplayText.push(ele.ageBand);
+          numberOfDisplayBars.push(i);
+        });
+      }
+
       return (
         <main className='brand-specific-page'>
-        aasds
+          <div className='brand-specific-wrapper'>
+            <section className='graph-container'>
+              <VictoryChart
+                domainPadding={30}
+                animate={{ delay: 0, duration: 500, easing: "bounce" }}
+                theme={VictoryTheme.material}
+                width = {600}
+              >
+                <VictoryAxis
+                  tickValues={numberOfDisplayBars}
+                  tickFormat={XaxisDisplayText}
+                />
+
+                <VictoryAxis
+                  dependentAxis
+                    tickFormat={(x) => (`${x}`)}
+                />
+                <VictoryGroup>
+                  <VictoryLine
+                    style={{
+                      data: { stroke: "#c43a31" },
+                    }}
+                    data={quotedPremium}
+                    x="count"
+                    y="quotedPremium"
+                  />
+                  <VictoryStack>
+                    <VictoryBar
+                      style={{
+                        data: { width: 40 }
+                      }}
+                      data={numberOfQuotes}
+                      x="count"
+                      y="quotes"
+                    />
+
+                    <VictoryBar
+                      style={{
+                        data: { width: 40 }
+                      }}
+                      data={numberOfWins}
+                      x="count"
+                      y="wins"
+                    />
+                  </VictoryStack>
+                </VictoryGroup>
+              </VictoryChart>
+            </section>
+          </div>
         </main>
       );
     }
