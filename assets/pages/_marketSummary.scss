@@ -1,0 +1,50 @@
+.market-summary-page {
+  display: flex;
+  background: $green-light;
+  height: calc(100vh - 10rem);
+  justify-content: center;
+  .market-summary-wrapper {
+    max-width: 60rem;
+    .graph-container {
+      .VictoryContainer {
+        width: 100%;
+      }
+    }
+    .market-summary-text {
+      h3 {
+        margin-top: 2rem;
+      }
+    }
+  }
+
+  #state-and-product {
+    .overlay-content {
+        display: flex;
+        flex-direction: column;
+        label {
+          color: white;
+          padding: 2rem;
+          margin: 0rem 5rem;
+          min-width: 10rem;
+          &:hover {
+            background: white;
+            color: black;
+          }
+        }
+        .select-product {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin-top: 5rem;
+          .input-group {
+            margin: 2rem;
+            display: flex;
+            justify-content: center;
+          }
+        }
+    }
+    h4{
+      color: white;
+    }
+  }
+}

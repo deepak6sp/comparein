@@ -3,9 +3,10 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(-90deg, $color-primary 0%, lighten($color-primary,20%) 100%);
+  background-color: $color-primary;
+  //background-image: linear-gradient(-90deg, $color-primary 0%, lighten($color-primary,20%) 100%);
   box-shadow: 0 2px 4px 0 $box-shadow-color;
-  font-size: 36px;
+  font-size: 3rem;
   text-transform: capitalize;
   color: white;
 }

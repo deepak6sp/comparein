@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {submitText} from '../../actions/signForm';
 
 import UI from '../../components/ui';
 
@@ -11,7 +10,8 @@ class LoginForm extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            loginType: props.loginType
         };
     }
 
@@ -24,8 +24,11 @@ class LoginForm extends Component {
         e.preventDefault();
         console.log(this.state.username);
         console.log(this.state.password);
-        this.props.submitText(this.state.inputValue);
-        this.setState({inputValue: ''});
+        if(this.state.loginType == 'admin') {
+          window.location = '/users';
+        } else {
+          window.location = '/market-summary';
+        }
     }
 
     /**
@@ -36,26 +39,15 @@ class LoginForm extends Component {
         this.setState({[e.target.name]: e.target.value});
     }
 
-    /**
-     * Gets the new state of the newText array from reducer
-     * and displays new Text
-     * @return {DOM} appends new Dom with newText
-     */
-    displayText() {
-        if (this.props.newText) {
-            return this.props.newText.map((element, index) =>
-                 <div className="display" key={index}>{element}</div>
-            );
-        }
 
-    }
 
     render() {
+      console.log(!this.state.loginType);
         return (
             <main className='login-form-page'>
                 <form className='login-form-box' onSubmit={this._handleSubmit.bind(this)} >
                   <section className='login-form-box-header'>
-                    Login
+                    {this.state.loginType} Login
                   </section>
                   <section className='login-form-box-body'>
                     <UI.Input
@@ -71,7 +63,9 @@ class LoginForm extends Component {
                     <UI.Input
                       type='submit'
                       value='Submit'/>
-                    <p className='forgot-password'> forgot password? </p>
+                    {(!this.state.loginType) &&
+                      <p className='forgot-password'> forgot password? </p>
+                    }
                   </section>
                 </form>
             </main>
@@ -80,24 +74,6 @@ class LoginForm extends Component {
 }
 
 
-/**
- * This will retrieve the state which will be available as props
- * as this.props.newText in the component
- * @param  {array} state array retrieved from reducer
- * @return {Object}      Object retrived from new state
- */
-const matchStateToProps = state => ({newText: state.newtext});
-
-
-/**
- * This will dispatch new value to actions from the
- * component as this.props.submitText
- * @param  {Dispatch} dispatch redux dispatcher
- * @return {Function}          submitText is the function located in Actions
- */
-const matchDispatchToProps = dispatch =>
-    bindActionCreators({submitText}, dispatch);
-
 
 // Bind actions, states and component to the store
-export default connect(matchStateToProps, matchDispatchToProps)(LoginForm);
+export default LoginForm;
