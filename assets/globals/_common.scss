@@ -16,3 +16,26 @@ p {
 .hidden {
   display: none;
 }
+
+.graph-label-desc {
+  display: flex;
+  justify-content: center;
+  div {
+    padding: 1rem 2rem;
+    color: white;
+    font-size: $font-main;
+    margin: 1rem;
+  }
+  .red {
+    background-color: $red;
+  }
+  .green-primary {
+    background-color: $color-primary;
+  }
+  .green-dark {
+    background-color: $green-dark;
+  }
+  .green-light {
+    background-color: $green-light;
+  }
+}
