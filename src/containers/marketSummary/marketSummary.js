@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getPremiumWins} from '../../actions/marketSummary';
-import { VictoryChart, VictoryGroup, VictoryLine, VictoryBar, VictoryAxis } from 'victory';
+import { VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
 import PopUp from '../../components/ui/popup';
@@ -61,14 +61,7 @@ class MarketSummary extends Component {
                       dependentAxis
                       tickFormat={(x) => (`${x}`)}
                     />
-                      <VictoryLine
-                        style={{
-                          data: { stroke: "#c43a31" },
-                        }}
-                        data={premium}
-                        x="brand"
-                        y="premium"
-                      />
+
                       <VictoryBar
                           style={{
                             data: { fill: "#4DB6AC", width: 40 }
@@ -102,6 +95,22 @@ class MarketSummary extends Component {
                               }
                             }
                           }]} />
+                      <VictoryLine
+                        style={{
+                          data: { stroke: "#c43a31" },
+                        }}
+                        data={premium}
+                        x="brand"
+                        y="premium"
+                      />
+                      <VictoryScatter
+                        style={{
+                          data: { stroke: "#c43a31" },
+                        }}
+                        data={premium}
+                        x="brand"
+                        y="premium"
+                      />
                   </VictoryChart>
                 </section>
                 <section className='market-summary-text'>

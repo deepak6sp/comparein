@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
-import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis,
+import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
@@ -59,14 +59,7 @@ class BrandSpecific extends Component {
                     tickFormat={(x) => (`${x}`)}
                 />
                 <VictoryGroup>
-                  <VictoryLine
-                    style={{
-                      data: { stroke: "#c43a31" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
+
                   <VictoryStack>
                     <VictoryBar
                       style={{
@@ -86,6 +79,22 @@ class BrandSpecific extends Component {
                       y="wins"
                     />
                   </VictoryStack>
+                  <VictoryLine
+                    style={{
+                      data: { stroke: "#c43a31" },
+                    }}
+                    data={quotedPremium}
+                    x="count"
+                    y="quotedPremium"
+                  />
+                  <VictoryScatter
+                    style={{
+                      data: { fill: "#000000" },
+                    }}
+                    data={quotedPremium}
+                    x="count"
+                    y="quotedPremium"
+                  />
                 </VictoryGroup>
               </VictoryChart>
               <div className='graph-label-desc'>
