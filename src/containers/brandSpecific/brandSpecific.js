@@ -39,46 +39,48 @@ class BrandSpecific extends Component {
         });
       }
 
+      console.log(numberOfQuotes);
+      console.log(numberOfWins);
+
       return (
         <main className='brand-specific-page'>
+          <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
             <section className='graph-container'>
+
               <VictoryChart
                 domainPadding={30}
                 animate={{ delay: 0, duration: 500, easing: "bounce" }}
                 theme={VictoryTheme.material}
                 width = {600}
               >
-                <VictoryAxis
-                  tickValues={numberOfDisplayBars}
-                  tickFormat={XaxisDisplayText}
-                />
+                  <VictoryAxis
+                    tickValues={numberOfDisplayBars}
+                    tickFormat={XaxisDisplayText}
+                  />
 
-                <VictoryAxis
-                  dependentAxis
-                    tickFormat={(x) => (`${x}`)}
-                />
-                <VictoryGroup>
+                  <VictoryAxis
+                    dependentAxis
+                      tickFormat={(x) => (`${x}`)}
+                  />
 
-                  <VictoryStack>
-                    <VictoryBar
-                      style={{
-                        data: { fill: "#1f4b47", width: 40 }
-                      }}
-                      data={numberOfQuotes}
-                      x="count"
-                      y="quotes"
-                    />
+                  <VictoryBar
+                    style={{
+                      data: { fill: "#1f4b47", width: 40 }
+                    }}
+                    data={numberOfQuotes}
+                    x="count"
+                    y="quotes"
+                  />
 
-                    <VictoryBar
-                      style={{
-                        data: { fill: "#4DB6AC", width: 40 }
-                      }}
-                      data={numberOfWins}
-                      x="count"
-                      y="wins"
-                    />
-                  </VictoryStack>
+                  <VictoryBar
+                    style={{
+                      data: { fill: "#4DB6AC", width: 40 }
+                    }}
+                    data={numberOfWins}
+                    x="count"
+                    y="wins"
+                  />
                   <VictoryLine
                     style={{
                       data: { stroke: "#c43a31" },
@@ -88,6 +90,7 @@ class BrandSpecific extends Component {
                     y="quotedPremium"
                   />
                   <VictoryScatter
+                    labels={(d) => `$${d.y}`}
                     style={{
                       data: { fill: "#000000" },
                     }}
@@ -95,12 +98,12 @@ class BrandSpecific extends Component {
                     x="count"
                     y="quotedPremium"
                   />
-                </VictoryGroup>
               </VictoryChart>
               <div className='graph-label-desc'>
                 <div className="red">Quoted Premium</div>
-                <div className="green-primary">Number Of Quotes</div>
-                <div className="green-dark">Number Of Wins</div>
+                <div className="green-dark">Number Of Quotes</div>
+                <div className="green-primary">Number Of Wins</div>
+
               </div>
             </section>
           </div>
