@@ -1,5 +1,5 @@
-export const getAgeWins = () => {
-  let response = fetch('http://localhost:8080/api/getAgeWins')
+export const getAgeQtesWins = () => {
+  let response = fetch('http://localhost:8080/api/getAgeQtesWins')
   .then((res) => res.json())
   .then(val => val);
 
@@ -10,9 +10,9 @@ export const getAgeWins = () => {
 }
 
 
-export const generateAgeWinsApi = (brandName) => {
+export const generateAgeQtesWinsApi = (brandName) => {
   var data = {'brandName':brandName};
-  let response = fetch('http://localhost:8080/api/getAgeWins', {
+  let response = fetch('http://localhost:8080/api/getAgeQtesWins', {
     method: 'post',
     headers: {
       'Accept': 'application/json',

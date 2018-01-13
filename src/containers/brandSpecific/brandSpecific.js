@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
+import {generateAgeQtesWinsApi, getAgeQtesWins} from '../../actions/brandSpecific';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
@@ -13,34 +13,39 @@ class BrandSpecific extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        };
+        this.numberOfQuotes = [];
+        this.numberOfWins = [];
+        this.XaxisDisplayText = [];
+        this.numberOfDisplayBars = [];
+        this.quotedPremium = [];
     }
 
     componentDidMount() {
-      this.props.generateAgeWinsApi(this.props.brandName);
-      this.props.getAgeWins(this.props.brandName);
+      this.props.generateAgeQtesWinsApi(this.props.brandName);
+      this.props.getAgeQtesWins(this.props.brandName);
     }
 
     render() {
-      console.log(this.props.brandSpecificDetails);
-      let numberOfQuotes = [];
-      let numberOfWins = [];
-      let XaxisDisplayText = [];
-      let numberOfDisplayBars = [];
-      let quotedPremium = [];
       if(this.props.brandSpecificDetails.length > 0) {
-        this.props.brandSpecificDetails[0].map((ele, i) => {
-          numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
-          numberOfWins.push({"count": i, "wins": ele.wins});
-          quotedPremium.push({"count": i, "quotedPremium": ele.quotedPremium});
-          XaxisDisplayText.push(ele.ageBand);
-          numberOfDisplayBars.push(i);
+        let i = 0;
+        this.props.brandSpecificDetails[0].map(ele => {
+
+          if(ele.rank == 1) {
+            this.numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
+            this.numberOfWins.push({"count": i, "wins": ele.wins});
+            this.quotedPremium.push({"count": i, "quotedPremium": ele.asp});
+            this.XaxisDisplayText.push(ele.ageBand);
+            this.numberOfDisplayBars.push(i);
+          }
+
         });
       }
 
-      console.log(numberOfQuotes);
-      console.log(numberOfWins);
+      console.log(this.numberOfQuotes);
+      console.log(this.numberOfWins);
+      console.log(this.quotedPremium);
+      console.log(this.XaxisDisplayText);
+      console.log(this.numberOfDisplayBars);
 
       return (
         <main className='brand-specific-page'>
@@ -54,56 +59,54 @@ class BrandSpecific extends Component {
                 theme={VictoryTheme.material}
                 width = {600}
               >
-                  <VictoryAxis
-                    tickValues={numberOfDisplayBars}
-                    tickFormat={XaxisDisplayText}
-                  />
+                <VictoryAxis
+                  tickValues={this.numberOfDisplayBars}
+                  tickFormat={this.XaxisDisplayText}
+                />
 
-                  <VictoryAxis
-                    dependentAxis
-                      tickFormat={(x) => (`${x}`)}
-                  />
+                <VictoryAxis
+                  dependentAxis
+                  tickFormat={(x) => (`${x}`)} />
 
-                  <VictoryBar
-                    style={{
-                      data: { fill: "#1f4b47", width: 40 }
-                    }}
-                    data={numberOfQuotes}
-                    x="count"
-                    y="quotes"
-                  />
+                <VictoryBar
+                  style={{
+                    data: { fill: "#1f4b47", width: 40 }
+                  }}
+                  data={this.numberOfQuotes}
+                  x="count"
+                  y="quotes" />
 
-                  <VictoryBar
-                    style={{
-                      data: { fill: "#4DB6AC", width: 40 }
-                    }}
-                    data={numberOfWins}
-                    x="count"
-                    y="wins"
-                  />
-                  <VictoryLine
-                    style={{
-                      data: { stroke: "#c43a31" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
-                  <VictoryScatter
-                    labels={(d) => `$${d.y}`}
-                    style={{
-                      data: { fill: "#000000" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
+                <VictoryBar
+                   style={{
+                     data: { fill: "#4DB6AC", width: 40 }
+                   }}
+                   data={this.numberOfWins}
+                   x="count"
+                   y="wins" />
+
+               <VictoryLine
+                  style={{
+                    data: { stroke: "#c43a31" },
+                  }}
+                  data={this.quotedPremium}
+                  x="count"
+                  y="quotedPremium" />
+
+                <VictoryScatter
+                  labels={(d) => `$${d.y}`}
+                  style={{
+                    data: { fill: "#000000" },
+                  }}
+                  data={this.quotedPremium}
+                  x="count"
+                  y="quotedPremium" />
+
+
               </VictoryChart>
               <div className='graph-label-desc'>
                 <div className="red">Quoted Premium</div>
                 <div className="green-dark">Number Of Quotes</div>
                 <div className="green-primary">Number Of Wins</div>
-
               </div>
             </section>
           </div>
@@ -129,7 +132,7 @@ const matchStateToProps = state => ({brandSpecificDetails: state.brandSpecificDe
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({generateAgeWinsApi, getAgeWins}, dispatch);
+    bindActionCreators({generateAgeQtesWinsApi, getAgeQtesWins}, dispatch);
 
 
 // Bind actions, states and component to the store

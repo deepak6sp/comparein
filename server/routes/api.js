@@ -13,7 +13,7 @@ conn.on('open', function () {
       premiumWinsResult = docs;
     });
   });
-  conn.db.collection('ageWins', function(err, coll) {
+  conn.db.collection('ageQtesWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       ageWinsResult = docs;
     });
@@ -24,9 +24,9 @@ apiRouter.get('/getPremiumWins', (req, res) => {
   res.send(premiumWinsResult);
 });
 
-apiRouter.post('/getAgeWins', (req, res) => {
+apiRouter.post('/getAgeQtesWins', (req, res) => {
   getAgeWinsResult = ageWinsResult.filter(value => value.brand == req.body.brandName);
-}).get('/getAgeWins', (req, res) => {
+}).get('/getAgeQtesWins', (req, res) => {
   res.send(getAgeWinsResult);
 });
 
