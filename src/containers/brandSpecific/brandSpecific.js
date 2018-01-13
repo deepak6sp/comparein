@@ -13,11 +13,10 @@ class BrandSpecific extends Component {
 
     constructor(props) {
         super(props);
-        this.numberOfQuotes = [];
-        this.numberOfWins = [];
-        this.XaxisDisplayText = [];
-        this.numberOfDisplayBars = [];
-        this.quotedPremium = [];
+
+        this.state = {
+          rank: 1
+        };
     }
 
     componentDidMount() {
@@ -25,32 +24,50 @@ class BrandSpecific extends Component {
       this.props.getAgeQtesWins(this.props.brandName);
     }
 
+    _handleRankChange(e) {
+      console.log(e.target.value);
+      this.setState({rank: e.target.value});
+    }
+
     render() {
+      console.log(this.state.rank);
+      let numberOfQuotes = [];
+      let numberOfWins = [];
+      let XaxisDisplayText = [];
+      let numberOfDisplayBars = [];
+      let quotedPremium = [];
       if(this.props.brandSpecificDetails.length > 0) {
         let i = 0;
         this.props.brandSpecificDetails[0].map(ele => {
 
-          if(ele.rank == 1) {
-            this.numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
-            this.numberOfWins.push({"count": i, "wins": ele.wins});
-            this.quotedPremium.push({"count": i, "quotedPremium": ele.asp});
-            this.XaxisDisplayText.push(ele.ageBand);
-            this.numberOfDisplayBars.push(i);
+          if(ele.rank == this.state.rank) {
+            numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
+            numberOfWins.push({"count": i, "wins": ele.wins});
+            quotedPremium.push({"count": i, "quotedPremium": ele.asp});
+            XaxisDisplayText.push(ele.ageBand);
+            numberOfDisplayBars.push(i);
           }
 
         });
       }
 
-      console.log(this.numberOfQuotes);
-      console.log(this.numberOfWins);
-      console.log(this.quotedPremium);
-      console.log(this.XaxisDisplayText);
-      console.log(this.numberOfDisplayBars);
+      console.log(numberOfQuotes);
+      console.log(numberOfWins);
+      console.log(quotedPremium);
+      console.log(XaxisDisplayText);
+      console.log(numberOfDisplayBars);
 
       return (
         <main className='brand-specific-page'>
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
+          <div className="slidecontainer">
+            <input type="range" min="1" max="5" value={this.state.rank} className="slider" onChange={this._handleRankChange.bind(this)}/>
+            Rank {this.state.rank}
+          </div>
+          <div className="switchcontainer">
+
+          </div>
             <section className='graph-container'>
 
               <VictoryChart
@@ -60,8 +77,8 @@ class BrandSpecific extends Component {
                 width = {600}
               >
                 <VictoryAxis
-                  tickValues={this.numberOfDisplayBars}
-                  tickFormat={this.XaxisDisplayText}
+                  tickValues={numberOfDisplayBars}
+                  tickFormat={XaxisDisplayText}
                 />
 
                 <VictoryAxis
@@ -72,7 +89,7 @@ class BrandSpecific extends Component {
                   style={{
                     data: { fill: "#1f4b47", width: 40 }
                   }}
-                  data={this.numberOfQuotes}
+                  data={numberOfQuotes}
                   x="count"
                   y="quotes" />
 
@@ -80,7 +97,7 @@ class BrandSpecific extends Component {
                    style={{
                      data: { fill: "#4DB6AC", width: 40 }
                    }}
-                   data={this.numberOfWins}
+                   data={numberOfWins}
                    x="count"
                    y="wins" />
 
@@ -88,7 +105,7 @@ class BrandSpecific extends Component {
                   style={{
                     data: { stroke: "#c43a31" },
                   }}
-                  data={this.quotedPremium}
+                  data={quotedPremium}
                   x="count"
                   y="quotedPremium" />
 
@@ -97,12 +114,13 @@ class BrandSpecific extends Component {
                   style={{
                     data: { fill: "#000000" },
                   }}
-                  data={this.quotedPremium}
+                  data={quotedPremium}
                   x="count"
                   y="quotedPremium" />
 
 
               </VictoryChart>
+
               <div className='graph-label-desc'>
                 <div className="red">Quoted Premium</div>
                 <div className="green-dark">Number Of Quotes</div>

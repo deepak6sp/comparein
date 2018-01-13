@@ -4,7 +4,11 @@ const express = require('express');
 const apiRouter =  express.Router();
 const conn = require('../database');
 
-var premiumWinsResult, ageWinsResult, getAgeWinsResult;
+var premiumWinsResult,
+    ageQtesWinsResult,
+    getAgeQtesWinsResult,
+    ageBandRelResult,
+    getAgeBandRelResult;
 
 conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
@@ -15,7 +19,12 @@ conn.on('open', function () {
   });
   conn.db.collection('ageQtesWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
-      ageWinsResult = docs;
+      ageQtesWinsResult = docs;
+    });
+  });
+  conn.db.collection('ageBandRel', function(err, coll) {
+    coll.find().toArray(function(err, docs) {
+      ageBandRelResult = docs;
     });
   });
 });
@@ -25,9 +34,15 @@ apiRouter.get('/getPremiumWins', (req, res) => {
 });
 
 apiRouter.post('/getAgeQtesWins', (req, res) => {
-  getAgeWinsResult = ageWinsResult.filter(value => value.brand == req.body.brandName);
+  getAgeQtesWinsResult = ageQtesWinsResult.filter(value => value.brand == req.body.brandName);
 }).get('/getAgeQtesWins', (req, res) => {
-  res.send(getAgeWinsResult);
+  res.send(getAgeQtesWinsResult);
+});
+
+apiRouter.post('/getAgeBandRel', (req, res) => {
+  getAgeBandRelResult = ageBandRelResult.filter(value => value.brand == req.body.brandName);
+}).get('/getAgeQtesWins', (req, res) => {
+  res.send(getAgeBandRelResult);
 });
 
 module.exports = apiRouter;
