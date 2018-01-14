@@ -4,11 +4,8 @@ import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
 
 import UI from '../../components/ui';
 
-class AgeQtesWins extends Component {
+const AgeQtesWins = (props) => (
 
-    render() {
-
-      return (
               <VictoryChart
                 domainPadding={30}
                 animate={{ delay: 0, duration: 500, easing: "bounce" }}
@@ -16,8 +13,8 @@ class AgeQtesWins extends Component {
                 width = {600}
               >
                 <VictoryAxis
-                  tickValues={numberOfDisplayBars}
-                  tickFormat={XaxisDisplayText}
+                  tickValues={props.numberOfDisplayBars}
+                  tickFormat={props.XaxisDisplayText}
                 />
 
                 <VictoryAxis
@@ -28,7 +25,7 @@ class AgeQtesWins extends Component {
                   style={{
                     data: { fill: "#1f4b47", width: 40 }
                   }}
-                  data={numberOfQuotes}
+                  data={props.numberOfQuotes}
                   x="count"
                   y="quotes" />
 
@@ -36,7 +33,7 @@ class AgeQtesWins extends Component {
                    style={{
                      data: { fill: "#4DB6AC", width: 40 }
                    }}
-                   data={numberOfWins}
+                   data={props.numberOfWins}
                    x="count"
                    y="wins" />
 
@@ -44,24 +41,21 @@ class AgeQtesWins extends Component {
                   style={{
                     data: { stroke: "#c43a31" },
                   }}
-                  data={quotedPremium}
+                  data={props.quotedPremiumOrRelativityValue}
                   x="count"
-                  y="quotedPremium" />
+                  y={props.YquotedPremiumOrRelativityText} />
 
                 <VictoryScatter
                   labels={(d) => `$${d.y}`}
                   style={{
                     data: { fill: "#000000" },
                   }}
-                  data={quotedPremium}
+                  data={props.quotedPremiumOrRelativityValue}
                   x="count"
-                  y="quotedPremium" />
-
+                  y={props.YquotedPremiumOrRelativityText} />
 
               </VictoryChart>
       );
-    }
-}
 
 // Bind actions, states and component to the store
 export default AgeQtesWins;

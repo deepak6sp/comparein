@@ -41,7 +41,7 @@ apiRouter.post('/getAgeQtesWins', (req, res) => {
 
 apiRouter.post('/getAgeBandRel', (req, res) => {
   getAgeBandRelResult = ageBandRelResult.filter(value => value.brand == req.body.brandName);
-}).get('/getAgeQtesWins', (req, res) => {
+}).get('/getAgeBandRel', (req, res) => {
   res.send(getAgeBandRelResult);
 });
 

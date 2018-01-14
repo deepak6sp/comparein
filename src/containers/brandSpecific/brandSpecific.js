@@ -2,12 +2,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {generateAgeQtesWinsApi, getAgeQtesWins} from '../../actions/brandSpecific';
+import {generateAgeQtesWinsApi, getAgeQtesWins, getAgeBandRel, generateAgeBandRelApi} from '../../actions/brandSpecific';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
-import PopUp from '../../components/ui/popup';
+import AgeQtesWins from './ageQtesWins.js';
 
 class BrandSpecific extends Component {
 
@@ -15,45 +15,72 @@ class BrandSpecific extends Component {
         super(props);
 
         this.state = {
-          rank: 1
+          ageBasedRank: 1,
+          ageBasedSwitchStatus: "off"
         };
     }
 
     componentDidMount() {
       this.props.generateAgeQtesWinsApi(this.props.brandName);
       this.props.getAgeQtesWins(this.props.brandName);
+      this.props.generateAgeBandRelApi(this.props.brandName);
+      this.props.getAgeBandRel(this.props.brandName);
     }
 
-    _handleRankChange(e) {
+    _handleAgeBasedRankChange(e) {
       console.log(e.target.value);
-      this.setState({rank: e.target.value});
+      this.setState({ageBasedRank: e.target.value});
+    }
+    _handleAgeBasedSwitch(e) {
+      console.log(e.target.value);
+      if(e.target.value == "off") {
+        this.setState({ageBasedSwitchStatus: 'on'});
+        console.log("called generateAgeBandRelApi");
+
+      } else {
+        this.setState({ageBasedSwitchStatus: 'off'});
+      }
     }
 
     render() {
-      console.log(this.state.rank);
       let numberOfQuotes = [];
       let numberOfWins = [];
       let XaxisDisplayText = [];
       let numberOfDisplayBars = [];
       let quotedPremium = [];
-      if(this.props.brandSpecificDetails.length > 0) {
-        let i = 0;
+      let relativityPremium = [];
+      let quotedPremiumOrRelativityValue = [];
+      let YquotedPremiumOrRelativityText;
+      console.log(this.props.brandSpecificDetails);
+      if(this.props.brandSpecificDetails.length > 1) {
+        let i=0, j=0;
         this.props.brandSpecificDetails[0].map(ele => {
-
-          if(ele.rank == this.state.rank) {
+          if(ele.rank == this.state.ageBasedRank) {
             numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
             numberOfWins.push({"count": i, "wins": ele.wins});
             quotedPremium.push({"count": i, "quotedPremium": ele.asp});
             XaxisDisplayText.push(ele.ageBand);
             numberOfDisplayBars.push(i);
           }
-
         });
+
+        this.props.brandSpecificDetails[1].map(ele => {
+          relativityPremium.push({"count": ++j, "relativityPremium": ele.relativity*100});
+        });
+      }
+
+      if(this.state.ageBasedSwitchStatus == 'off') {
+          quotedPremiumOrRelativityValue = quotedPremium;
+          YquotedPremiumOrRelativityText = "quotedPremium";
+      } else {
+          quotedPremiumOrRelativityValue = relativityPremium;
+          YquotedPremiumOrRelativityText = "relativityPremium";
       }
 
       console.log(numberOfQuotes);
       console.log(numberOfWins);
       console.log(quotedPremium);
+      console.log(relativityPremium);
       console.log(XaxisDisplayText);
       console.log(numberOfDisplayBars);
 
@@ -61,65 +88,30 @@ class BrandSpecific extends Component {
         <main className='brand-specific-page'>
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
-          <div className="slidecontainer">
-            <input type="range" min="1" max="5" value={this.state.rank} className="slider" onChange={this._handleRankChange.bind(this)}/>
-            Rank {this.state.rank}
-          </div>
-          <div className="switchcontainer">
+            <div className="slidecontainer">
+              <input type="range" min="1" max="5" value={this.state.ageBasedRank} className="slider" onChange={this._handleAgeBasedRankChange.bind(this)}/>
+              Rank {this.state.ageBasedRank}
+            </div>
+            <div className="switchcontainer">
+              <div className="onoffswitch">
+                  <input value={this.state.ageBasedSwitchStatus} onChange = {this._handleAgeBasedSwitch.bind(this)} type="checkbox" className="onoffswitch-checkbox" id="myonoffswitch" defaultChecked />
+                  <label className="onoffswitch-label" htmlFor="myonoffswitch">
+                      <span className="onoffswitch-inner"></span>
+                      <span className="onoffswitch-switch"></span>
+                  </label>
+              </div>
+            </div>
 
-          </div>
             <section className='graph-container'>
 
-              <VictoryChart
-                domainPadding={30}
-                animate={{ delay: 0, duration: 500, easing: "bounce" }}
-                theme={VictoryTheme.material}
-                width = {600}
-              >
-                <VictoryAxis
-                  tickValues={numberOfDisplayBars}
-                  tickFormat={XaxisDisplayText}
-                />
+              <AgeQtesWins
+                numberOfQuotes= {numberOfQuotes}
+                numberOfWins = {numberOfWins}
+                quotedPremiumOrRelativityValue = {quotedPremiumOrRelativityValue}
+                XaxisDisplayText = {XaxisDisplayText}
+                numberOfDisplayBars = {numberOfDisplayBars}
+                YquotedPremiumOrRelativityText = {YquotedPremiumOrRelativityText}/>
 
-                <VictoryAxis
-                  dependentAxis
-                  tickFormat={(x) => (`${x}`)} />
-
-                <VictoryBar
-                  style={{
-                    data: { fill: "#1f4b47", width: 40 }
-                  }}
-                  data={numberOfQuotes}
-                  x="count"
-                  y="quotes" />
-
-                <VictoryBar
-                   style={{
-                     data: { fill: "#4DB6AC", width: 40 }
-                   }}
-                   data={numberOfWins}
-                   x="count"
-                   y="wins" />
-
-               <VictoryLine
-                  style={{
-                    data: { stroke: "#c43a31" },
-                  }}
-                  data={quotedPremium}
-                  x="count"
-                  y="quotedPremium" />
-
-                <VictoryScatter
-                  labels={(d) => `$${d.y}`}
-                  style={{
-                    data: { fill: "#000000" },
-                  }}
-                  data={quotedPremium}
-                  x="count"
-                  y="quotedPremium" />
-
-
-              </VictoryChart>
 
               <div className='graph-label-desc'>
                 <div className="red">Quoted Premium</div>
@@ -150,7 +142,7 @@ const matchStateToProps = state => ({brandSpecificDetails: state.brandSpecificDe
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({generateAgeQtesWinsApi, getAgeQtesWins}, dispatch);
+    bindActionCreators({generateAgeQtesWinsApi, getAgeQtesWins, getAgeBandRel, generateAgeBandRelApi}, dispatch);
 
 
 // Bind actions, states and component to the store
