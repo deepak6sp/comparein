@@ -3,11 +3,31 @@
   background: $green-light;
   min-height: calc(100vh - 10rem);
   justify-content: center;
+  flex-direction: column;
+  h3 {
+    margin : 5rem auto;
+    text-transform: uppercase;
+
+  }
   .brand-specific-wrapper {
+    margin: 0 auto;
     .graph-container {
+      .ageBasedGraphs {
+        margin-bottom: 10rem;
+      }
+      .sliders-wrapper {
+        display: flex;
+        justify-content: space-around;
+        .rangeSlidecontainer {
+          display: flex;
+          justify-content: space-around;
+        }
+      }
+
       .VictoryContainer {
         width: 100%;
       }
     }
+
   }
 }

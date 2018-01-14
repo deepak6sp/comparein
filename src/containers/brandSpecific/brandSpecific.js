@@ -2,110 +2,205 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {generateAgeWinsApi, getAgeWins} from '../../actions/brandSpecific';
+import {generateAgeQtesWinsApi, getAgeQtesWins,
+        getAgeBandRel, generateAgeBandRelApi,
+        generateSiQtesWinsApi, getSiQtesWins,
+        getSiBandRel, generateSiBandRelApi} from '../../actions/brandSpecific';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
-import PopUp from '../../components/ui/popup';
+import AgeSiGraph from './ageSiGraph';
+import GraphSelectionSliders from './graphSelectionSliders';
+import GraphLabelDescription from './graphLabelDescription';
 
 class BrandSpecific extends Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
+          ageBasedRank: 1,
+          ageBasedSwitchStatus: "off",
+          siBasedRank : 1,
+          siBasedSwitchStatus: "off",
+          ageRedLabel: "Quoted Premium",
+          siRedLabel: "Quoted Premium"
         };
     }
 
     componentDidMount() {
-      this.props.generateAgeWinsApi(this.props.brandName);
-      this.props.getAgeWins(this.props.brandName);
+        // this is for age quotes and relativity values
+      this.props.generateAgeQtesWinsApi(this.props.brandName);
+      this.props.getAgeQtesWins(this.props.brandName);
+      this.props.generateAgeBandRelApi(this.props.brandName);
+      this.props.getAgeBandRel(this.props.brandName);
+
+      // this is for si quotes and relativity values
+      this.props.generateSiQtesWinsApi(this.props.brandName);
+      this.props.getSiQtesWins(this.props.brandName);
+      this.props.generateSiBandRelApi(this.props.brandName);
+      this.props.getSiBandRel(this.props.brandName);
+
+    }
+
+    _handleAgeBasedRankChange(e) {
+      this.setState({ageBasedRank: e.target.value});
+    }
+
+    _handleSiBasedRankChange(e) {
+      this.setState({siBasedRank: e.target.value});
+    }
+
+    _handleAgeBasedSwitch(e) {
+      if(e.target.value == "off") {
+        this.setState({ageBasedSwitchStatus: 'on'});
+        this.setState({ageRedLabel: "Relativity"});
+      } else {
+        this.setState({ageBasedSwitchStatus: 'off'});
+        this.setState({ageRedLabel: "Quoted Premium"});
+      }
+    }
+
+    _handleSiBasedSwitch(e) {
+      if(e.target.value == "off") {
+        this.setState({siBasedSwitchStatus: 'on'});
+        this.setState({siRedLabel: "Relativity"});
+      } else {
+        this.setState({siBasedSwitchStatus: 'off'});
+        this.setState({siRedLabel: "Quoted Premium"});
+      }
     }
 
     render() {
-      console.log(this.props.brandSpecificDetails);
-      let numberOfQuotes = [];
-      let numberOfWins = [];
-      let XaxisDisplayText = [];
-      let numberOfDisplayBars = [];
-      let quotedPremium = [];
-      if(this.props.brandSpecificDetails.length > 0) {
-        this.props.brandSpecificDetails[0].map((ele, i) => {
-          numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
-          numberOfWins.push({"count": i, "wins": ele.wins});
-          quotedPremium.push({"count": i, "quotedPremium": ele.quotedPremium});
-          XaxisDisplayText.push(ele.ageBand);
-          numberOfDisplayBars.push(i);
-        });
+      // this is for age quotes and relativity values
+      let ageQtesAndRel = {
+        numberOfQuotes : [],
+        numberOfWins : [],
+        XaxisDisplayText : [],
+        numberOfDisplayBars : [],
+        quotedPremium : [],
+        relativityPremium : [],
+        quotedPremiumOrRelativityValue : [],
+        YquotedPremiumOrRelativityText: ''
       }
 
-      console.log(numberOfQuotes);
-      console.log(numberOfWins);
+      // this is for si quotes and relativity values
+      let siQtesAndRel = {
+        numberOfQuotes : [],
+        numberOfWins : [],
+        XaxisDisplayText : [],
+        numberOfDisplayBars : [],
+        quotedPremium : [],
+        relativityPremium : [],
+        quotedPremiumOrRelativityValue : [],
+        YquotedPremiumOrRelativityText: ''
+      }
 
+      // preparing data to feed it to graph
+      if(this.props.brandSpecificDetails.length > 3) {
+
+        let i=0, j=0, k=0, l=0;
+        // this is for age quotes and relativity values
+        this.props.brandSpecificDetails[0].map(ele => {
+          if(ele.rank == this.state.ageBasedRank) {
+            ageQtesAndRel.numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
+            ageQtesAndRel.numberOfWins.push({"count": i, "wins": ele.wins});
+            ageQtesAndRel.quotedPremium.push({"count": i, "quotedPremium": ele.asp});
+            ageQtesAndRel.XaxisDisplayText.push(ele.ageBand);
+            ageQtesAndRel.numberOfDisplayBars.push(i);
+          }
+        });
+
+        this.props.brandSpecificDetails[1].map(ele => {
+            ageQtesAndRel.relativityPremium.push({"count": ++j, "relativityPremium": ele.relativity*100});
+        });
+
+        // this is for si quotes and relativity values
+        this.props.brandSpecificDetails[2].map(ele => {
+          if(ele.rank == this.state.siBasedRank) {
+            siQtesAndRel.numberOfQuotes.push({"count": ++k, "quotes": ele.quotes});
+            siQtesAndRel.numberOfWins.push({"count": k, "wins": ele.wins});
+            siQtesAndRel.quotedPremium.push({"count": k, "quotedPremium": ele.asp});
+            siQtesAndRel.XaxisDisplayText.push(ele.siBand);
+            siQtesAndRel.numberOfDisplayBars.push(k);
+          }
+        });
+
+        this.props.brandSpecificDetails[3].map(ele => {
+            siQtesAndRel.relativityPremium.push({"count": ++l, "relativityPremium": ele.relativity*100});
+        });
+
+      }
+
+      if(this.state.ageBasedSwitchStatus == 'off') {
+          ageQtesAndRel.quotedPremiumOrRelativityValue = ageQtesAndRel.quotedPremium;
+          ageQtesAndRel.YquotedPremiumOrRelativityText = "quotedPremium";
+      } else {
+          ageQtesAndRel.quotedPremiumOrRelativityValue = ageQtesAndRel.relativityPremium;
+          ageQtesAndRel.YquotedPremiumOrRelativityText = "relativityPremium";
+      }
+
+      if(this.state.siBasedSwitchStatus == 'off') {
+          siQtesAndRel.quotedPremiumOrRelativityValue = siQtesAndRel.quotedPremium;
+          siQtesAndRel.YquotedPremiumOrRelativityText = "quotedPremium";
+      } else {
+          siQtesAndRel.quotedPremiumOrRelativityValue = siQtesAndRel.relativityPremium;
+          siQtesAndRel.YquotedPremiumOrRelativityText = "relativityPremium";
+      }
+
+      // display prepared data from above
       return (
         <main className='brand-specific-page'>
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
             <section className='graph-container'>
+              <div className='ageBasedGraphs'>
+                <GraphSelectionSliders
+                  rank = {this.state.ageBasedRank}
+                  handleRankChange = {this._handleAgeBasedRankChange.bind(this)}
+                  switchStatus = {this.state.ageBasedSwitchStatus}
+                  handleSwitch = {this._handleAgeBasedSwitch.bind(this)}
+                  switchId = "ageOnoffswitch"/>
 
-              <VictoryChart
-                domainPadding={30}
-                animate={{ delay: 0, duration: 500, easing: "bounce" }}
-                theme={VictoryTheme.material}
-                width = {600}
-              >
-                  <VictoryAxis
-                    tickValues={numberOfDisplayBars}
-                    tickFormat={XaxisDisplayText}
-                  />
+                <AgeSiGraph
+                  numberOfQuotes= {ageQtesAndRel.numberOfQuotes}
+                  numberOfWins = {ageQtesAndRel.numberOfWins}
+                  quotedPremiumOrRelativityValue = {ageQtesAndRel.quotedPremiumOrRelativityValue}
+                  XaxisDisplayText = {ageQtesAndRel.XaxisDisplayText}
+                  numberOfDisplayBars = {ageQtesAndRel.numberOfDisplayBars}
+                  YquotedPremiumOrRelativityText = {ageQtesAndRel.YquotedPremiumOrRelativityText}/>
 
-                  <VictoryAxis
-                    dependentAxis
-                      tickFormat={(x) => (`${x}`)}
-                  />
-
-                  <VictoryBar
-                    style={{
-                      data: { fill: "#1f4b47", width: 40 }
-                    }}
-                    data={numberOfQuotes}
-                    x="count"
-                    y="quotes"
-                  />
-
-                  <VictoryBar
-                    style={{
-                      data: { fill: "#4DB6AC", width: 40 }
-                    }}
-                    data={numberOfWins}
-                    x="count"
-                    y="wins"
-                  />
-                  <VictoryLine
-                    style={{
-                      data: { stroke: "#c43a31" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
-                  <VictoryScatter
-                    labels={(d) => `$${d.y}`}
-                    style={{
-                      data: { fill: "#000000" },
-                    }}
-                    data={quotedPremium}
-                    x="count"
-                    y="quotedPremium"
-                  />
-              </VictoryChart>
-              <div className='graph-label-desc'>
-                <div className="red">Quoted Premium</div>
-                <div className="green-dark">Number Of Quotes</div>
-                <div className="green-primary">Number Of Wins</div>
-
+                <GraphLabelDescription
+                  redLabel = {this.state.ageRedLabel}
+                  greenDarkLabel = "Number Of Quotes"
+                  greenPrimarylabel = "Number Of Wins" />
               </div>
+
+              <div className='siBasedGraphs'>
+                <GraphSelectionSliders
+                  rank = {this.state.siBasedRank}
+                  handleRankChange = {this._handleSiBasedRankChange.bind(this)}
+                  switchStatus = {this.state.siBasedSwitchStatus}
+                  handleSwitch = {this._handleSiBasedSwitch.bind(this)}
+                  switchId = "siOnoffswitch"/>
+
+                <AgeSiGraph
+                  numberOfQuotes= {siQtesAndRel.numberOfQuotes}
+                  numberOfWins = {siQtesAndRel.numberOfWins}
+                  quotedPremiumOrRelativityValue = {siQtesAndRel.quotedPremiumOrRelativityValue}
+                  XaxisDisplayText = {siQtesAndRel.XaxisDisplayText}
+                  numberOfDisplayBars = {siQtesAndRel.numberOfDisplayBars}
+                  YquotedPremiumOrRelativityText = {siQtesAndRel.YquotedPremiumOrRelativityText}/>
+
+                <GraphLabelDescription
+                  redLabel = {this.state.siRedLabel}
+                  greenDarkLabel = "Number Of Quotes"
+                  greenPrimarylabel = "Number Of Wins" />
+              </div>
+
             </section>
+
           </div>
         </main>
       );
@@ -129,7 +224,12 @@ const matchStateToProps = state => ({brandSpecificDetails: state.brandSpecificDe
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({generateAgeWinsApi, getAgeWins}, dispatch);
+    bindActionCreators({
+      generateAgeQtesWinsApi, getAgeQtesWins,
+      getAgeBandRel, generateAgeBandRelApi,
+      generateSiQtesWinsApi, getSiQtesWins,
+      getSiBandRel, generateSiBandRelApi
+    }, dispatch);
 
 
 // Bind actions, states and component to the store
