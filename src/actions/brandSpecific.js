@@ -92,9 +92,6 @@ export const generateSiQtesWinsApi = (brandName) => {
   .then((res) => res.json())
   .then(val => val);
 
-  console.log("response");
-  console.log(response);
-
   return({
   	type : 'GENERATE_SI_QTES_WINS_API',
 	  payload : response

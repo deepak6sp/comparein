@@ -10,7 +10,9 @@ import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
 import UI from '../../components/ui';
-import AgeQtesWins from './ageQtesWins.js';
+import AgeSiGraph from './ageSiGraph';
+import GraphSelectionSliders from './graphSelectionSliders';
+import GraphLabelDescription from './graphLabelDescription';
 
 class BrandSpecific extends Component {
 
@@ -22,6 +24,8 @@ class BrandSpecific extends Component {
           ageBasedSwitchStatus: "off",
           siBasedRank : 1,
           siBasedSwitchStatus: "off",
+          ageRedLabel: "Quoted Premium",
+          siRedLabel: "Quoted Premium"
         };
     }
 
@@ -41,29 +45,30 @@ class BrandSpecific extends Component {
     }
 
     _handleAgeBasedRankChange(e) {
-      console.log(e.target.value);
       this.setState({ageBasedRank: e.target.value});
     }
 
     _handleSiBasedRankChange(e) {
-      console.log(e.target.value);
       this.setState({siBasedRank: e.target.value});
     }
 
     _handleAgeBasedSwitch(e) {
       if(e.target.value == "off") {
         this.setState({ageBasedSwitchStatus: 'on'});
+        this.setState({ageRedLabel: "Relativity"});
       } else {
         this.setState({ageBasedSwitchStatus: 'off'});
+        this.setState({ageRedLabel: "Quoted Premium"});
       }
     }
 
     _handleSiBasedSwitch(e) {
-      console.log("here");
       if(e.target.value == "off") {
         this.setState({siBasedSwitchStatus: 'on'});
+        this.setState({siRedLabel: "Relativity"});
       } else {
         this.setState({siBasedSwitchStatus: 'off'});
+        this.setState({siRedLabel: "Quoted Premium"});
       }
     }
 
@@ -94,7 +99,7 @@ class BrandSpecific extends Component {
 
       // preparing data to feed it to graph
       if(this.props.brandSpecificDetails.length > 3) {
-        console.log(this.props.brandSpecificDetails);
+
         let i=0, j=0, k=0, l=0;
         // this is for age quotes and relativity values
         this.props.brandSpecificDetails[0].map(ele => {
@@ -144,81 +149,57 @@ class BrandSpecific extends Component {
           siQtesAndRel.YquotedPremiumOrRelativityText = "relativityPremium";
       }
 
-      console.log(ageQtesAndRel.numberOfQuotes);
-      console.log(ageQtesAndRel.numberOfWins);
-      console.log(ageQtesAndRel.quotedPremium);
-      console.log(ageQtesAndRel.relativityPremium);
-      console.log(ageQtesAndRel.XaxisDisplayText);
-      console.log(ageQtesAndRel.numberOfDisplayBars);
-
       // display prepared data from above
       return (
         <main className='brand-specific-page'>
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
             <section className='graph-container'>
+              <div className='ageBasedGraphs'>
+                <GraphSelectionSliders
+                  rank = {this.state.ageBasedRank}
+                  handleRankChange = {this._handleAgeBasedRankChange.bind(this)}
+                  switchStatus = {this.state.ageBasedSwitchStatus}
+                  handleSwitch = {this._handleAgeBasedSwitch.bind(this)}
+                  switchId = "ageOnoffswitch"/>
 
-              <div className="slidecontainer">
-                <input type="range" min="1" max="5" value={this.state.ageBasedRank} className="slider" onChange={this._handleAgeBasedRankChange.bind(this)}/>
-                Rank {this.state.ageBasedRank}
+                <AgeSiGraph
+                  numberOfQuotes= {ageQtesAndRel.numberOfQuotes}
+                  numberOfWins = {ageQtesAndRel.numberOfWins}
+                  quotedPremiumOrRelativityValue = {ageQtesAndRel.quotedPremiumOrRelativityValue}
+                  XaxisDisplayText = {ageQtesAndRel.XaxisDisplayText}
+                  numberOfDisplayBars = {ageQtesAndRel.numberOfDisplayBars}
+                  YquotedPremiumOrRelativityText = {ageQtesAndRel.YquotedPremiumOrRelativityText}/>
+
+                <GraphLabelDescription
+                  redLabel = {this.state.ageRedLabel}
+                  greenDarkLabel = "Number Of Quotes"
+                  greenPrimarylabel = "Number Of Wins" />
               </div>
 
-              <div className="switchcontainer">
-                <div className="onoffswitch">
-                    <input value={this.state.ageBasedSwitchStatus} onChange = {this._handleAgeBasedSwitch.bind(this)} type="checkbox" className="onoffswitch-checkbox" id="ageOnoffswitch" defaultChecked />
-                    <label className="onoffswitch-label" htmlFor="ageOnoffswitch">
-                        <span className="onoffswitch-inner"></span>
-                        <span className="onoffswitch-switch"></span>
-                    </label>
-                </div>
-              </div>
+              <div className='siBasedGraphs'>
+                <GraphSelectionSliders
+                  rank = {this.state.siBasedRank}
+                  handleRankChange = {this._handleSiBasedRankChange.bind(this)}
+                  switchStatus = {this.state.siBasedSwitchStatus}
+                  handleSwitch = {this._handleSiBasedSwitch.bind(this)}
+                  switchId = "siOnoffswitch"/>
 
-              <AgeQtesWins
-                numberOfQuotes= {ageQtesAndRel.numberOfQuotes}
-                numberOfWins = {ageQtesAndRel.numberOfWins}
-                quotedPremiumOrRelativityValue = {ageQtesAndRel.quotedPremiumOrRelativityValue}
-                XaxisDisplayText = {ageQtesAndRel.XaxisDisplayText}
-                numberOfDisplayBars = {ageQtesAndRel.numberOfDisplayBars}
-                YquotedPremiumOrRelativityText = {ageQtesAndRel.YquotedPremiumOrRelativityText}/>
+                <AgeSiGraph
+                  numberOfQuotes= {siQtesAndRel.numberOfQuotes}
+                  numberOfWins = {siQtesAndRel.numberOfWins}
+                  quotedPremiumOrRelativityValue = {siQtesAndRel.quotedPremiumOrRelativityValue}
+                  XaxisDisplayText = {siQtesAndRel.XaxisDisplayText}
+                  numberOfDisplayBars = {siQtesAndRel.numberOfDisplayBars}
+                  YquotedPremiumOrRelativityText = {siQtesAndRel.YquotedPremiumOrRelativityText}/>
 
-
-              <div className='graph-label-desc'>
-                <div className="red">Quoted Premium</div>
-                <div className="green-dark">Number Of Quotes</div>
-                <div className="green-primary">Number Of Wins</div>
-              </div>
-
-              <div className="slidecontainer">
-                <input type="range" min="1" max="5" value={this.state.siBasedRank} className="slider" onChange={this._handleSiBasedRankChange.bind(this)}/>
-                Rank {this.state.siBasedRank}
-              </div>
-
-              <div className="switchcontainer">
-                <div className="onoffswitch">
-                    <input value={this.state.siBasedSwitchStatus} onChange = {this._handleSiBasedSwitch.bind(this)} type="checkbox" className="onoffswitch-checkbox" id="siOnoffswitch" defaultChecked />
-                    <label className="onoffswitch-label" htmlFor="siOnoffswitch">
-                        <span className="onoffswitch-inner"></span>
-                        <span className="onoffswitch-switch"></span>
-                    </label>
-                </div>
-              </div>
-
-              <AgeQtesWins
-                numberOfQuotes= {siQtesAndRel.numberOfQuotes}
-                numberOfWins = {siQtesAndRel.numberOfWins}
-                quotedPremiumOrRelativityValue = {siQtesAndRel.quotedPremiumOrRelativityValue}
-                XaxisDisplayText = {siQtesAndRel.XaxisDisplayText}
-                numberOfDisplayBars = {siQtesAndRel.numberOfDisplayBars}
-                YquotedPremiumOrRelativityText = {siQtesAndRel.YquotedPremiumOrRelativityText}/>
-
-              <div className='graph-label-desc'>
-                <div className="red">Quoted Premium</div>
-                <div className="green-dark">Number Of Quotes</div>
-                <div className="green-primary">Number Of Wins</div>
+                <GraphLabelDescription
+                  redLabel = {this.state.siRedLabel}
+                  greenDarkLabel = "Number Of Quotes"
+                  greenPrimarylabel = "Number Of Wins" />
               </div>
 
             </section>
-
 
           </div>
         </main>

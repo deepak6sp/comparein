@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
-import UI from '../../components/ui';
-
 const AgeQtesWins = (props) => (
 
               <VictoryChart

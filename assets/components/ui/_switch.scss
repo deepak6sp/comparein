@@ -36,15 +36,15 @@
   }
   .onoffswitch-inner:before {
       content: "Premium";
-      padding-right: 10px;
-      background-color: $color-primary;
+      padding-right: 15px;
+      background-color: $grey-mid;
       color: white;
       text-align: right;
   }
   .onoffswitch-inner:after {
       content: "Relativity";
-      padding-left: 10px;
-      background-color: $green-dark;
+      padding-left: 15px;
+      background-color: $grey-mid;
       color: white;
   }
   .onoffswitch-switch {
@@ -55,7 +55,7 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 80px;
+      left: 85px;
       border-radius: 20px;
       transition: all 0.3s ease-in 0s;
   }
@@ -63,6 +63,6 @@
       margin-left: 0;
   }
   .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-      left: 0px;
+      left: 5px;
   }
 }
