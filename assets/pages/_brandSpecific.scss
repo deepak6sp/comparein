@@ -16,11 +16,12 @@
         margin-bottom: 10rem;
       }
       .sliders-wrapper {
-        display: flex;
-        justify-content: space-around;
+        .switchcontainer {
+          float: left;
+        }
         .rangeSlidecontainer {
           display: flex;
-          justify-content: space-around;
+          justify-content: flex-end;
         }
       }
 

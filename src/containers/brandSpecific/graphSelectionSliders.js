@@ -20,10 +20,13 @@ const GraphSelectionSliders = (props) => (
         </div>
       </div>
 
-      <div className="rangeSlidecontainer">
-        <input type="range" min="1" max="5" value={props.rank} className="slider" onChange={props.handleRankChange}/>
-        <span className="range-slider__value">Rank {props.rank}</span>
-      </div>
+      {
+        props.showRankSlider &&
+        <div className="rangeSlidecontainer">
+          <input type="range" min="1" max="3" value={props.rank} className="slider" onChange={props.handleRankChange}/>
+          <span className="range-slider__value">Rank {props.rank}</span>
+        </div>
+      }
 
     </section>
 
