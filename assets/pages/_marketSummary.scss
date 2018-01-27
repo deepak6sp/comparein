@@ -21,6 +21,9 @@
     .overlay-content {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
         label {
           color: white;
           padding: 2rem;
@@ -29,6 +32,11 @@
           &:hover {
             background: white;
             color: black;
+          }
+        }
+        .select-state {
+          img {
+            width: 40rem;
           }
         }
         .select-product {

@@ -21,6 +21,7 @@ class MarketSummary extends Component {
     }
 
     _handlePopUpClose() {
+      console.log("clicked");
       this.setState({openPopUp: false});
     }
 

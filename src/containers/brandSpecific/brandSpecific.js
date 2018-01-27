@@ -161,6 +161,7 @@ class BrandSpecific extends Component {
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
             <section className='graph-container'>
+
               <div className='ageBasedGraphs'>
                 <GraphSelectionSliders
                   showRankSlider = {this.state.showAgeRankSlider}
@@ -207,7 +208,14 @@ class BrandSpecific extends Component {
                   greenPrimarylabel = "Number Of Wins" />
               </div>
 
+              <div className="iframe-container" >
+                <a target="_blank" href="https://zenlytics.shinyapps.io/pricePositon/">Open in a new window</a>
+                <iframe id="position_iframe" src="https://zenlytics.shinyapps.io/pricePositon/"></iframe>
+              </div>
+
             </section>
+
+
 
           </div>
         </main>
