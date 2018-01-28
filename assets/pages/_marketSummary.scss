@@ -38,6 +38,22 @@
           img {
             width: 40rem;
           }
+          .ausMap {
+            margin-top: 2rem;
+            height: 25rem;
+            display: flex;
+            justify-content: center;
+            .territory {
+              fill: $grey-light;
+              &:hover {
+                cursor: pointer;
+          			fill: $grey-dark;
+          		}
+              &.active {
+                fill: $color-primary; 
+              }
+            }
+          }
         }
         .select-product {
           display: flex;

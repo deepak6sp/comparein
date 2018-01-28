@@ -5,6 +5,7 @@ import {getPremiumWins} from '../../actions/marketSummary';
 import { VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
 
 import UI from '../../components/ui';
+import AusMap from './aus_map';
 import PopUp from '../../components/ui/popup';
 
 class MarketSummary extends Component {
@@ -21,14 +22,20 @@ class MarketSummary extends Component {
     }
 
     _handlePopUpClose() {
-      console.log("clicked");
       this.setState({openPopUp: false});
     }
 
     _handleSelectedBrand(name) {
-      console.log(name);
       //this.props.generateAgeWinsApi(name);
       window.location = '/brand-specific/'+name;
+    }
+
+    _onClick(e) {
+      const active = document.querySelector('.active');
+      if(active){
+        active.classList.remove('active');
+      }
+      e.target.classList.add("active");
     }
 
     render() {
@@ -135,6 +142,9 @@ class MarketSummary extends Component {
 
                   <section className='select-state'>
                     <h4>Select state</h4>
+                    <div className="ausMap">
+                      <AusMap onClick={this._onClick.bind(this)}/>
+                    </div>
                   </section>
 
                   <section className='select-product'>
