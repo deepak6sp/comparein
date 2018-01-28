@@ -24,16 +24,7 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
-        label {
-          color: white;
-          padding: 2rem;
-          margin: 0rem 5rem;
-          min-width: 10rem;
-          &:hover {
-            background: white;
-            color: black;
-          }
-        }
+
         .select-state {
           img {
             width: 40rem;
@@ -50,7 +41,7 @@
           			fill: $grey-dark;
           		}
               &.active {
-                fill: $color-primary; 
+                fill: $color-primary;
               }
             }
           }
@@ -64,6 +55,29 @@
             margin: 2rem;
             display: flex;
             justify-content: center;
+            label {
+              display: flex;
+              flex-direction: column;
+              color: white;
+              padding: 2rem;
+              margin: 0rem 5rem;
+              min-width: 10rem;
+
+              &:hover, &.active {
+                background: white;
+                color: black;
+                svg {
+                  .icon {
+                    fill: $grey-dark;
+                  }
+                }
+              }
+              svg {
+                .icon {
+                  fill: $grey-light;
+                }
+              }
+            }
           }
         }
     }
