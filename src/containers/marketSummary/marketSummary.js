@@ -4,8 +4,9 @@ import {connect} from 'react-redux';
 import {getPremiumWins} from '../../actions/marketSummary';
 import { VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
 
-import UI from '../../components/ui';
-import PopUp from '../../components/ui/popup';
+import AusMap from './aus_map';
+import Icons from '../../components/icons';
+import PopUp from '../../components/popup';
 
 class MarketSummary extends Component {
 
@@ -25,9 +26,24 @@ class MarketSummary extends Component {
     }
 
     _handleSelectedBrand(name) {
-      console.log(name);
       //this.props.generateAgeWinsApi(name);
       window.location = '/brand-specific/'+name;
+    }
+
+    _onClick(e) {
+      let activeElement;
+      if (e.target.parentElement.className == "input-group") {
+        activeElement = document.querySelector('.input-group .active');
+        console.log("selected product = ", e.target);
+      } else {
+        activeElement = document.querySelector('svg .active');
+        console.log("selected state = ", e.target.getAttribute("id"));
+      }
+      if(activeElement){
+        activeElement.classList.remove('active');
+      }
+      e.target.classList.add("active");
+
     }
 
     render() {
@@ -134,16 +150,23 @@ class MarketSummary extends Component {
 
                   <section className='select-state'>
                     <h4>Select state</h4>
+                    <div className="ausMap">
+                      <AusMap onClick={this._onClick.bind(this)}/>
+                    </div>
                   </section>
 
                   <section className='select-product'>
                     <h4>Select Product</h4>
                     <div className='input-group'>
                       <input id="home" name="home" type="checkbox" className="hidden"/>
-                      <label htmlFor="home">Home and Content</label>
+                      <label htmlFor="home" onClick={this._onClick.bind(this)}>
+                        <Icons.Home/> Home and Content
+                      </label>
 
                       <input id="car" name="car" type="checkbox" className="hidden"/>
-                      <label htmlFor="car">Car</label>
+                      <label htmlFor="car" onClick={this._onClick.bind(this)}>
+                        <Icons.Car/> Car
+                      </label>
                     </div>
                   </section>
 

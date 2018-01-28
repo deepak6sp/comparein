@@ -18,7 +18,14 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 include: path.join(__dirname, 'src')
-            }
+            },
+            {
+              test: /\.svg$/,
+              loader: 'react-svg-loader?jsx=1',
+              query: {
+                jsx: true
+              }
+            },
         ]
     },
     devtool: 'cheap-module-eval-source-map',

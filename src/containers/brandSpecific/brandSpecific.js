@@ -25,7 +25,9 @@ class BrandSpecific extends Component {
           siBasedRank : 1,
           siBasedSwitchStatus: "off",
           ageRedLabel: "Quoted Premium",
-          siRedLabel: "Quoted Premium"
+          siRedLabel: "Quoted Premium",
+          showAgeRankSlider: true,
+          showSiRankSlider: true
         };
     }
 
@@ -56,9 +58,11 @@ class BrandSpecific extends Component {
       if(e.target.value == "off") {
         this.setState({ageBasedSwitchStatus: 'on'});
         this.setState({ageRedLabel: "Relativity"});
+        this.setState({showAgeRankSlider: false});
       } else {
         this.setState({ageBasedSwitchStatus: 'off'});
         this.setState({ageRedLabel: "Quoted Premium"});
+        this.setState({showAgeRankSlider: true});
       }
     }
 
@@ -66,9 +70,11 @@ class BrandSpecific extends Component {
       if(e.target.value == "off") {
         this.setState({siBasedSwitchStatus: 'on'});
         this.setState({siRedLabel: "Relativity"});
+        this.setState({showSiRankSlider: false});
       } else {
         this.setState({siBasedSwitchStatus: 'off'});
         this.setState({siRedLabel: "Quoted Premium"});
+        this.setState({showSiRankSlider: true});
       }
     }
 
@@ -155,8 +161,10 @@ class BrandSpecific extends Component {
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
             <section className='graph-container'>
+
               <div className='ageBasedGraphs'>
                 <GraphSelectionSliders
+                  showRankSlider = {this.state.showAgeRankSlider}
                   rank = {this.state.ageBasedRank}
                   handleRankChange = {this._handleAgeBasedRankChange.bind(this)}
                   switchStatus = {this.state.ageBasedSwitchStatus}
@@ -179,6 +187,7 @@ class BrandSpecific extends Component {
 
               <div className='siBasedGraphs'>
                 <GraphSelectionSliders
+                  showRankSlider = {this.state.showSiRankSlider}
                   rank = {this.state.siBasedRank}
                   handleRankChange = {this._handleSiBasedRankChange.bind(this)}
                   switchStatus = {this.state.siBasedSwitchStatus}
@@ -199,7 +208,14 @@ class BrandSpecific extends Component {
                   greenPrimarylabel = "Number Of Wins" />
               </div>
 
+              <div className="iframe-container" >
+                <a target="_blank" href="https://zenlytics.shinyapps.io/pricePositon/">Open in a new window</a>
+                <iframe id="position_iframe" src="https://zenlytics.shinyapps.io/pricePositon/"></iframe>
+              </div>
+
             </section>
+
+
 
           </div>
         </main>

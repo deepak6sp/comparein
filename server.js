@@ -20,6 +20,8 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static('images'))
 app.use('/', clientRouter);
 
 app.use('/api', apiRouter);
@@ -28,6 +30,7 @@ app.use('/admin', adminRouter);
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 
 
 app.listen('8080');

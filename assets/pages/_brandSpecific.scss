@@ -16,11 +16,12 @@
         margin-bottom: 10rem;
       }
       .sliders-wrapper {
-        display: flex;
-        justify-content: space-around;
+        .switchcontainer {
+          float: left;
+        }
         .rangeSlidecontainer {
           display: flex;
-          justify-content: space-around;
+          justify-content: flex-end;
         }
       }
 
@@ -28,6 +29,28 @@
         width: 100%;
       }
     }
+
+    .iframe-container {
+      margin-top: 5rem;
+      iframe {
+        width: 100%;
+        height: 60rem;
+      }
+      a {
+        font-size: $font-main;
+        color: $grey-mid;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        display: block;
+        float: right;
+        &:hover {
+          cursor: pointer;
+          color:  $grey-dark;
+          text-decoration: underline;
+        }
+      }
+    }
+
 
   }
 }
