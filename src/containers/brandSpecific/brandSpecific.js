@@ -14,6 +14,26 @@ import AgeSiGraph from './ageSiGraph';
 import GraphSelectionSliders from './graphSelectionSliders';
 import GraphLabelDescription from './graphLabelDescription';
 
+import { Map } from 'react-leaflet';
+import Choropleth from 'react-leaflet-choropleth';
+
+
+import {geoStates} from "./states";
+
+var L = require('leaflet');
+require('leaflet-choropleth');
+
+const style = {
+  fillColor: '#F28F3B',
+  weight: 2,
+  opacity: 1,
+  color: 'white',
+  dashArray: '3',
+  fillOpacity: 0.5
+}
+
+
+
 class BrandSpecific extends Component {
 
     constructor(props) {
@@ -27,7 +47,8 @@ class BrandSpecific extends Component {
           ageRedLabel: "Quoted Premium",
           siRedLabel: "Quoted Premium",
           showAgeRankSlider: true,
-          showSiRankSlider: true
+          showSiRankSlider: true,
+          features: geoStates.features
         };
     }
 
@@ -43,7 +64,39 @@ class BrandSpecific extends Component {
       this.props.getSiQtesWins(this.props.brandName);
       this.props.generateSiBandRelApi(this.props.brandName);
       this.props.getSiBandRel(this.props.brandName);
+      this.mymap = L.map('mapid').setView([37.8, -96], 4);
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiZGVlcGFrNnNwIiwiYSI6ImNqZTEyYnRmcTNzYWgyd3QzOHd1dzA1dGgifQ.glvYBXpk5_BtBvckbtHdEw', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 18,
+          id: 'mapbox.streets',
+          accessToken: 'sk.eyJ1IjoiZGVlcGFrNnNwIiwiYSI6ImNqZTEyYnRmcTNzYWgyd3QzOHd1dzA1dGgifQ.glvYBXpk5_BtBvckbtHdEw'
+      }).addTo(this.mymap);
 
+      L.geoJson(geoStates, {
+        style: (feature) => this._mapStyles(feature)
+      }).addTo(this.mymap);
+    }
+
+    _mapStyles(feature) {
+        return {
+            fillColor: this._getColor(feature.properties.density),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+    }
+
+    _getColor(d) {
+      return d > 1000 ? '#800026' :
+      d > 500  ? '#BD0026' :
+      d > 200  ? '#E31A1C' :
+      d > 100  ? '#FC4E2A' :
+      d > 50   ? '#FD8D3C' :
+      d > 20   ? '#FEB24C' :
+      d > 10   ? '#FED976' :
+                 '#FFEDA0';
     }
 
     _handleAgeBasedRankChange(e) {
@@ -160,6 +213,7 @@ class BrandSpecific extends Component {
         <main className='brand-specific-page'>
           <h3>{this.props.brandName}</h3>
           <div className='brand-specific-wrapper'>
+           {/*
             <section className='graph-container'>
 
               <div className='ageBasedGraphs'>
@@ -208,14 +262,26 @@ class BrandSpecific extends Component {
                   greenPrimarylabel = "Number Of Wins" />
               </div>
 
+              
+
               <div className="iframe-container" >
                 <a target="_blank" href="https://zenlytics.shinyapps.io/pricePositon/">Open in a new window</a>
                 <iframe id="position_iframe" src="https://zenlytics.shinyapps.io/pricePositon/"></iframe>
-              </div>
+              </div> 
 
-            </section>
-
-
+            </section>*/}
+              {/* <Map>
+                <Choropleth
+                  data={{type: 'FeatureCollection', features: geoStates.features}}
+                  valueProperty={(feature) => feature.properties.incidents}
+                  scale={['#b3cde0', '#011f4b']}
+                  steps={7}
+                  style={style}
+                  mode='q'
+                  onEachFeature={(feature, layer) => layer.bindPopup('District ' + feature.properties.dist_num + '<br>' +
+                  feature.properties.incidents.toLocaleString() + ' incidents')}
+                />
+              </Map> */}
 
           </div>
         </main>

@@ -1372,6 +1372,14 @@ chokidar@^1.4.3, chokidar@^1.6.0:
   optionalDependencies:
     fsevents "^1.0.0"
 
+chroma-js@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.1.1.tgz#9bb9434959336ece75700aaadfeedc71806d8c05"
+
+chroma-js@^1.1.1:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.6.tgz#22dd7220ef6b55dcfcb8ef92982baaf55dced45d"
+
 cipher-base@^1.0.0, cipher-base@^1.0.1:
   version "1.0.3"
   resolved "https://registry.npmjs.org/cipher-base/-/cipher-base-1.0.3.tgz#eeabf194419ce900da3018c207d212f2a6df0a07"
@@ -4415,6 +4423,18 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
+leaflet-choropleth@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/leaflet-choropleth/-/leaflet-choropleth-1.1.4.tgz#1c75d5f3236daf45c81434862ea838196315534e"
+  dependencies:
+    chroma-js "^1.1.1"
+    leaflet "^1.0.2"
+    lodash "^4.17.4"
+
+leaflet@^1.0.2, leaflet@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.3.1.tgz#86f336d2fb0e2d0ff446677049a5dc34cf0ea60e"
+
 lerp@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/lerp/-/lerp-1.0.3.tgz#a18c8968f917896de15ccfcc28d55a6b731e776e"
@@ -4456,6 +4476,10 @@ loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.0:
     big.js "^3.1.3"
     emojis-list "^2.0.0"
     json5 "^0.5.0"
+
+lodash-es@^4.0.0:
+  version "4.17.5"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.5.tgz#9fc6e737b1c4d151d8f9cae2247305d552ce748f"
 
 lodash-es@^4.2.0, lodash-es@^4.2.1:
   version "4.17.4"
@@ -6180,6 +6204,20 @@ react-hot-loader@3.0.0-beta.1:
     react-proxy "^3.0.0-alpha.0"
     redbox-react "^1.2.3"
     source-map "^0.4.4"
+
+react-leaflet-choropleth@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-leaflet-choropleth/-/react-leaflet-choropleth-2.0.0.tgz#541ecc1fcd1023fbd9c4cd4e464e25fa38768a5d"
+  dependencies:
+    chroma-js "1.1.1"
+
+react-leaflet@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/react-leaflet/-/react-leaflet-1.8.1.tgz#c06bfb3a69c2f0f0e6358f0da11cf1b1bce3a516"
+  dependencies:
+    lodash "^4.0.0"
+    lodash-es "^4.0.0"
+    warning "^3.0.0"
 
 react-plotly.js@^1.1.1:
   version "1.1.1"
