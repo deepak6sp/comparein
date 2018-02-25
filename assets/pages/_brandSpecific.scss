@@ -52,14 +52,15 @@
       }
     }
 
+    .leaflet-container {
+      position: relative;
+      height: 600px;
+      width: 600px;
+      margin-bottom: 10vh;
+    }
+
 
   }
 }
 
-.leaflet-container {
-  position: relative;
-  border: 1px solid red;
-  height: 600px;
-  width: 600px;
-  margin-bottom: 10vh;
-}
+
