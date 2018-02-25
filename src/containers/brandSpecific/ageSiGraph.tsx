@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
-        VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
+        VictoryTheme, VictoryStack, VictoryGroup} from 'victory';
 
-const AgeQtesWins = (props) => (
+const AgeQtesWins = (props: any) => (
 
               <VictoryChart
                 domainPadding={30}
                 animate={{ delay: 0, duration: 500, easing: "bounce" }}
                 theme={VictoryTheme.material}
-                width = {600}
-              >
+                width = {600}>
                 <VictoryAxis
                   tickValues={props.numberOfDisplayBars}
                   tickFormat={props.XaxisDisplayText}
@@ -17,7 +16,7 @@ const AgeQtesWins = (props) => (
 
                 <VictoryAxis
                   dependentAxis
-                  tickFormat={(x) => (`${x}`)} />
+                  tickFormat={(x: number) => (`${x}`)} />
 
                 <VictoryBar
                   style={{

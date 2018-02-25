@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const StandardInput = props =>
+export const StandardInput = (props:any) =>
   <input
   type={props.type}
   name={props.name}

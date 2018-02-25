@@ -1,5 +1,4 @@
-const Icons = {};
-
+const Icons:any = {};
 
 import {Home} from './home';
 Icons.Home = Home;

@@ -1,4 +1,4 @@
-const UI = {};
+const UI:any = {};
 
 
 import {StandardButton} from './button';

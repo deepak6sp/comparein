@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: [
         'webpack-hot-middleware/client',
-        './src/index.ts'
+        './src/index.tsx'
     ],
     output: {
         path: path.join(__dirname),
@@ -18,7 +18,7 @@ module.exports = {
                 loader: 'style-loader!css-loader!sass-loader'
             },
             {
-                test: /\.ts?$/, 
+                test: /\.ts(x)?$/, 
                 loader: ["awesome-typescript-loader"],
             },
             {

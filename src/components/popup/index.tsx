@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PopUp = props => {
+const PopUp = (props: any) => {
 
   return (
     <section id="myNav" className="overlay">

@@ -15,7 +15,7 @@ const store = createStoreWithMiddleware(MainReducer);
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router />
+        <Router/>
     </Provider>,
   document.getElementById('main') 
 );

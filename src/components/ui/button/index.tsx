@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const StandardButton = props =>
+export const StandardButton = (props: any) =>
     <button
         type="submit"
         onClick={props.onClick}

@@ -28,7 +28,7 @@
     "redux": "^3.6.0",
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
-    "victory": "^0.24.3"
+    "victory": "^0.25.6"
   },
   "devDependencies": {
     "@types/node": "^9.4.6",
@@ -37,6 +37,7 @@
     "@types/react-redux": "^5.0.15",
     "@types/redux": "^3.6.0",
     "@types/redux-promise": "^0.5.28",
+    "@types/victory": "^0.9.15",
     "awesome-typescript-loader": "^3.5.0",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",

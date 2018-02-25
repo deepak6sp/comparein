@@ -7,7 +7,7 @@ import {generateAgeQtesWinsApi, getAgeQtesWins,
         generateSiQtesWinsApi, getSiQtesWins,
         getSiBandRel, generateSiBandRelApi} from '../../actions/brandSpecific';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
-        VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
+        VictoryTheme, VictoryStack, VictoryGroup} from 'victory';
 
 import UI from '../../components/ui';
 import AgeSiGraph from './ageSiGraph';
@@ -19,7 +19,7 @@ import Choropleth from './choropleth';
 
 class BrandSpecific extends Component {
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
 
         this.state = {
@@ -49,15 +49,15 @@ class BrandSpecific extends Component {
      
     }
 
-    _handleAgeBasedRankChange(e) {
+    _handleAgeBasedRankChange(e: any) {
       this.setState({ageBasedRank: e.target.value});
     }
 
-    _handleSiBasedRankChange(e) {
+    _handleSiBasedRankChange(e: any) {
       this.setState({siBasedRank: e.target.value});
     }
 
-    _handleAgeBasedSwitch(e) {
+    _handleAgeBasedSwitch(e: any) {
       if(e.target.value == "off") {
         this.setState({ageBasedSwitchStatus: 'on'});
         this.setState({ageRedLabel: "Relativity"});
@@ -69,7 +69,7 @@ class BrandSpecific extends Component {
       }
     }
 
-    _handleSiBasedSwitch(e) {
+    _handleSiBasedSwitch(e: any) {
       if(e.target.value == "off") {
         this.setState({siBasedSwitchStatus: 'on'});
         this.setState({siRedLabel: "Relativity"});
