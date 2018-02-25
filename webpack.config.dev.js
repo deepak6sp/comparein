@@ -13,12 +13,16 @@ module.exports = {
     },
     module: {
         loaders: [
-            {test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader'},
+            {
+                test: /\.scss$/,
+                loader: 'style-loader!css-loader!sass-loader'
+            },
             {
                 test: /\.ts?$/, 
-                loader: ["awesome-typescript-loader",'babel-loader'],
-                exclude: /node_modules/ },
-            {test: /\.js$/,
+                loader: ["awesome-typescript-loader"],
+            },
+            {
+                test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 include: path.join(__dirname, 'src')

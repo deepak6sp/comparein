@@ -1,10 +1,10 @@
 const Icons = {};
 
 
-import {Home} from './home.js';
+import {Home} from './home';
 Icons.Home = Home;
 
-import {Car} from './car.js';
+import {Car} from './car';
 Icons.Car = Car;
 
 

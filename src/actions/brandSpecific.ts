@@ -12,7 +12,7 @@ export const getAgeQtesWins = () => {
 }
 
 
-export const generateAgeQtesWinsApi = (brandName) => {
+export const generateAgeQtesWinsApi = (brandName: string) => {
   var data = {'brandName':brandName};
   let response = fetch('http://localhost:8080/api/getAgeQtesWins', {
     method: 'post',
@@ -44,7 +44,7 @@ export const getAgeBandRel = () => {
 }
 
 
-export const generateAgeBandRelApi = (brandName) => {
+export const generateAgeBandRelApi = (brandName: string) => {
   var data = {'brandName':brandName};
   let response = fetch('http://localhost:8080/api/getAgeBandRel', {
     method: 'post',
@@ -79,7 +79,7 @@ export const getSiQtesWins = () => {
 }
 
 
-export const generateSiQtesWinsApi = (brandName) => {
+export const generateSiQtesWinsApi = (brandName: string) => {
   var data = {'brandName':brandName};
   let response = fetch('http://localhost:8080/api/getSiQtesWins', {
     method: 'post',
@@ -111,7 +111,7 @@ export const getSiBandRel = () => {
 }
 
 
-export const generateSiBandRelApi = (brandName) => {
+export const generateSiBandRelApi = (brandName: string) => {
   var data = {'brandName':brandName};
   let response = fetch('http://localhost:8080/api/getSiBandRel', {
     method: 'post',
