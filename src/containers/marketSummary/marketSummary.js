@@ -7,6 +7,7 @@ import { VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, Vi
 import AusMap from './aus_map';
 import Icons from '../../components/icons';
 import PopUp from '../../components/popup';
+import UI from '../../components/ui';
 
 class MarketSummary extends Component {
 
@@ -22,6 +23,10 @@ class MarketSummary extends Component {
     }
 
     _handlePopUpClose() {
+      this.setState({openPopUp: false});
+    }
+
+    _handleSubmit() {
       this.setState({openPopUp: false});
     }
 
@@ -145,7 +150,7 @@ class MarketSummary extends Component {
       } else {
         return (
           <main className='market-summary-page'>
-            <form id='state-and-product'>
+            <form id='state-and-product' onSubmit={this._handleSubmit.bind(this)}>
               <PopUp handlePopUpClose={this._handlePopUpClose.bind(this)}>
 
                   <section className='select-state'>
@@ -169,6 +174,10 @@ class MarketSummary extends Component {
                       </label>
                     </div>
                   </section>
+
+                  <UI.Input
+                      type='submit'
+                      value='Submit'/>
 
               </PopUp>
             </form>
