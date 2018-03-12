@@ -17,7 +17,6 @@ var premiumWinsResult,
 var createRankDb = function(docs) {
   let newSortedValuesArray = [];
   let newSortedValuesRank = [];
-  
   // sort array and rearrage brandname 
   docs.forEach((doc, index) => {
     newSortedValuesArray.push(
@@ -37,41 +36,89 @@ var createRankDb = function(docs) {
 conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
   conn.db.collection('rawData', function(err, coll) {
-      coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1, _id:0}).toArray(function(err, docs) {
-        conn.db.collection('simulatedBrandRanks', (err, coll1) => {
+      
+      coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1,_id:0}).toArray(function(err, docs) {
           const res = createRankDb(docs);
-          coll1.remove({ }, function(err) {
-            coll1.insert(res, function(err) {
-              coll1.find({}).toArray(function(err, doc1) {
+          let index = 1;
+          let arr = [];
+          var createObj = {};
+          res.forEach((doc) => {
+            
+            switch(doc.brandName) {
+              case "AAMI":
+                createObj.AAMIRank = doc.rank;
+                break;
+              case "Allianz":
+                createObj.AllianzRank = doc.rank;
+                break;
+              case "Bingle":
+                createObj.BingleRank = doc.rank;
+                break;
+              case "Coles":
+                createObj.ColesRank = doc.rank;
+                break;
+              case "RACV":
+                createObj.RACVRank = doc.rank;
+                break;
+              default :
+                break;
+            }
+            if(index % 5 == 0 && index!=0) {
+              arr.push(createObj);
+              createObj = {};
+            }
+            index ++;
+          });
 
-                let occurance = [];
-                doc1.forEach((ele, i) => {
-                  if(ele.rank == 1) {
-                    occurance.push(ele.brandName);
-                  }
-                });
+          
 
-                let count = occurance.reduce((acc, curr) => {
-                  if (typeof acc[curr] == 'undefined') {
-                    acc[curr] = 1;
-                  } else {
-                    acc[curr] += 1;
-                  }
-                
-                  return acc;
-                }, {});
-                conn.db.collection('simulatedPremiumWins', (err, coll2) => {
+          conn.db.collection('rawData', (err, coll2) => {
+            coll2.find({}).toArray((err, docs2) => {
+              docs2.forEach((doc,index) => {
+                let obj = {};
+                 obj = Object.assign(doc, arr[index])
+                 conn.db.collection('generateRawDataRanks', (err, coll2) => {
                   coll2.remove({ }, function(err) {
-                    coll2.insert(count);
+                    coll2.insert(obj);
                   });
                 });
-  
-                
               });
             });
           });
-        });
+         
+
+          // coll1.remove({ }, function(err) {
+          //   coll1.insert(res, function(err) {
+          //     coll1.find({}).toArray(function(err, doc1) {
+
+          //       let occurance = [];
+          //       doc1.forEach((ele, i) => {
+          //         if(ele.rank == 1) {
+          //           occurance.push(ele.brandName);
+          //         }
+          //       });
+
+          //       let count = occurance.reduce((acc, curr) => {
+          //         if (typeof acc[curr] == 'undefined') {
+          //           acc[curr] = 1;
+          //         } else {
+          //           acc[curr] += 1;
+          //         }
+                
+          //         return acc;
+          //       }, {});
+
+          //       conn.db.collection('simulatedPremiumWins', (err, coll2) => {
+          //         coll2.remove({ }, function(err) {
+          //           coll2.insert(count);
+          //         });
+          //       });
+          //     });
+          //   });
+          // });
       });
+
+      
   });
 
   conn.db.collection('premiumWins', function(err, coll) {
