@@ -12,35 +12,102 @@ var premiumWinsResult,
     siQtesWinsResult,
     getsiQtesWinsResult,
     siBandRelResult,
-    getSiBandRelResult;
+    getSiBandRelResult, colescount=0;
+
+var createRankDb = function(docs) {
+  let newSortedValuesArray = [];
+  let newSortedValuesRank = [];
+  
+  // sort array and rearrage brandname 
+  docs.forEach((doc, index) => {
+    newSortedValuesArray.push(
+      Object.keys(doc).sort((a,b) => doc[a]-doc[b])
+    );
+  });
+
+  //assign key according to sorted array
+  newSortedValuesArray.forEach((doc,index) => {
+    for(key in doc) {
+      newSortedValuesRank.push({"brandName": doc[key], "rank":++key});
+    }
+  });
+  return newSortedValuesRank;
+}
 
 conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
+  conn.db.collection('rawData', function(err, coll) {
+      coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1, _id:0}).toArray(function(err, docs) {
+        conn.db.collection('simulatedBrandRanks', (err, coll1) => {
+          const res = createRankDb(docs);
+          coll1.remove({ }, function(err) {
+            coll1.insert(res, function(err) {
+              coll1.find({}).toArray(function(err, doc1) {
+
+                let occurance = [];
+                doc1.forEach((ele, i) => {
+                  if(ele.rank == 1) {
+                    occurance.push(ele.brandName);
+                  }
+                });
+
+                let count = occurance.reduce((acc, curr) => {
+                  if (typeof acc[curr] == 'undefined') {
+                    acc[curr] = 1;
+                  } else {
+                    acc[curr] += 1;
+                  }
+                
+                  return acc;
+                }, {});
+                conn.db.collection('simulatedPremiumWins', (err, coll2) => {
+                  coll2.remove({ }, function(err) {
+                    coll2.insert(count);
+                  });
+                });
+  
+                
+              });
+            });
+          });
+        });
+      });
+  });
+
   conn.db.collection('premiumWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       premiumWinsResult = docs;
     });
   });
+
   conn.db.collection('ageQtesWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       ageQtesWinsResult = docs;
     });
   });
+
   conn.db.collection('ageBandRel', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       ageBandRelResult = docs;
     });
   });
+
   conn.db.collection('siQtesWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       siQtesWinsResult = docs;
     });
   });
+
   conn.db.collection('siBandRel', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       siBandRelResult = docs;
     });
   });
+
+});
+
+apiRouter.get('/temp', (req, res) => {
+  res.send({"coles":colescount});
 });
 
 apiRouter.get('/getPremiumWins', (req, res) => {
