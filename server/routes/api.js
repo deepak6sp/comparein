@@ -68,36 +68,42 @@ function allFunctions() {
       return ranksArray;
     },
   
-    calculateOccurances : (ranksArray) => {
-      let occurance = [];
-      Object.entries(ranksArray).forEach(([key,brandName]) => {
+    calculatePremiumWins : (docs) => {
+      let wins = {AAMI: 0, Allianz: 0, Bingle: 0, Coles:0, RACV:0};
+      let premium = { AAMI: 0, Allianz: 0, Bingle: 0, Coles:0, RACV:0};
+
+      Object.entries(docs).forEach(([key,brand]) => {
         // get 1st ranks occurances
-        if(brandName.AAMIRank == 1) occurance.push('AAMI');
-        if(brandName.AllianzRank == 1) occurance.push('Allianz');
-        if(brandName.BingleRank == 1) occurance.push('Bingle');
-        if(brandName.ColesRank == 1) occurance.push('Coles');
-        if(brandName.RACVRank == 1) occurance.push('RACV');
-    
-      });
-      
-      // get total number of individual brand ranks
-      let count = occurance.reduce((acc, curr) => {
-    
-        if (typeof acc[curr] == 'undefined') {
-          acc[curr] = 1;
-        } else {
-          acc[curr] += 1;
+        
+        if(brand.AAMIRank == 1) {
+          wins.AAMI++;
+          premium.AAMI += brand.AAMI;
+        }
+        if(brand.AllianzRank == 1) {
+          wins.Allianz++;
+          premium.Allianz += brand.Allianz;
+        }
+        if(brand.BingleRank == 1) {
+          wins.Bingle++;
+          premium.Bingle += brand.Bingle;
+        }
+        if(brand.ColesRank == 1) {
+          wins.Coles++;
+          premium.Coles += brand.Coles;
+        }
+        if(brand.RACVRank == 1) {
+          wins.RACV++;
+          premium.RACV += brand.RACV;
         }
     
-        return acc;
-      }, {});
-    
-      let newAcc = [];
-      Object.entries(count).forEach(([key,val]) => {
-        newAcc.push({brand: key, wins: val})
       });
-    
-      return newAcc;
+     
+      let premiumWins = [];
+      Object.entries(wins).forEach(([key,val]) => {
+        premiumWins.push({brand: key, wins: val, premium: parseFloat(premium[key]/val).toFixed(2)})
+      });
+
+      return premiumWins;
     }
   }
 }
@@ -108,17 +114,12 @@ conn.on('open', function () {
   conn.db.collection('rawData', function(err, coll) {
       
       coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1,_id:0}).toArray(function(err, docs) {
-          
+
+          // get ranks, join with current rawData and
+          // insert records to 'rawDataRanks' collection
           var af = allFunctions();
           const ranksArray = af.createRankDb(docs);
-          const premiumWins = af.calculateOccurances(ranksArray);
 
-          conn.db.collection('pw', function(err, spw) {
-            spw.remove({}, function(err) {
-              spw.insert(premiumWins);
-            });
-          });
-          
           conn.db.collection('rawData', (err, rd) => {
             rd.find({}).toArray((err, rdDocs) => {
               let newRawData = [];
@@ -136,49 +137,82 @@ conn.on('open', function () {
   });
 
 
+  conn.db.collection('rawDataRanks', (err, rdr) => {
+    rdr.find({}).toArray((err, rdDocs) => {
+
+      //get wins and premium and insert it to 'pw' collection 
+      var af = allFunctions();
+      const premiumWins = af.calculatePremiumWins(rdDocs);
+      console.log("premiumWins");
+      console.log(premiumWins);
+      conn.db.collection('premiumWins', function(err, spw) {
+        spw.remove({}, function(err) {
+          spw.insert(premiumWins);
+        });
+      });
+    });
+  });
   // simulated changed values goes here
-  conn.db.collection('rawDataRanks', function(err, rdr) {
-    var selectedAgeBand = '45-54';
-    var selectedAgeBandChange = 0;
+  conn.db.collection('rawData', function(err, rdr) {
+    var selectedAgeBand = 'Below 25';
+    var selectedAgeBandChange = 0.8;
     var selectedValueChange = 0;
     var selectedSuburbChange = 0;
     var brandName = 'AAMI';
 
     
-    rdr.find({}).toArray(function(err, docs) {
+    rdr.find({}).toArray(function(err, rdrDocs) {
 
-      
       // calculations here
-      docs.forEach((ele, i) => {
+      rdrDocs.forEach((ele, i) => {
         if(ele.ageBand == selectedAgeBand) {
           // get new value of simulation
           let newVal = ele[brandName]*
           (1+parseFloat(selectedAgeBandChange))*
           (1+parseFloat(selectedValueChange))*
           (1+parseFloat(selectedSuburbChange));
+
           ele[brandName] = newVal;
         }
       });
 
       let newDocs = [];
       // get brand for assigning ranks
-      docs.forEach((ele,i) => {
+      rdrDocs.forEach((ele,i) => {
         newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV})
       });
 
       // get ranks
       var af = allFunctions();
       const ranksArray = af.createRankDb(newDocs);
-      const simulatedPremiumWins = af.calculateOccurances(ranksArray);
+
+      let newSimulatedData = [];
+      rdrDocs.forEach((doc,index) => {
+        newSimulatedData.push(Object.assign(doc, ranksArray[index]));
+      });
+
+      conn.db.collection('simulatedDataRanks', (err, sdr) => {
+        sdr.remove({ }, function(err) {
+          sdr.insert(newSimulatedData);
+        });
+      });
+    })
+  });
+
+  conn.db.collection('simulatedDataRanks', (err, sdr) => {
+    sdr.find({}).toArray((err, sdrDocs) => {
+
+      //get wins and premium and insert it to 'pw' collection 
+      var af = allFunctions();
+      const simulatedPremiumWins = af.calculatePremiumWins(sdrDocs);
 
       console.log(simulatedPremiumWins);
-
       conn.db.collection('simulatedPremiumWins', function(err, spw) {
         spw.remove({}, function(err) {
           spw.insert(simulatedPremiumWins);
         });
       });
-    })
+    });
   });
 
   conn.db.collection('premiumWins', function(err, coll) {
