@@ -14,6 +14,8 @@ var premiumWinsResult,
     siBandRelResult,
     getSiBandRelResult, colescount=0;
 
+var brandNames = ["AAMI", "Allianz", "Bingle", "Coles", "RACV"];
+
 function allFunctions() {
   return {
     createRankDb : (docs) => {
@@ -100,7 +102,7 @@ function allFunctions() {
      
       let premiumWins = [];
       Object.entries(wins).forEach(([key,val]) => {
-        premiumWins.push({brand: key, wins: val, premium: parseFloat(premium[key]/val).toFixed(2)})
+        premiumWins.push({brand: key, wins: val, premium: parseInt((premium[key]/val).toFixed(2))})
       });
 
       return premiumWins;
@@ -152,10 +154,11 @@ conn.on('open', function () {
       });
     });
   });
+
   // simulated changed values goes here
   conn.db.collection('rawData', function(err, rdr) {
     var selectedAgeBand = 'Below 25';
-    var selectedAgeBandChange = 0.8;
+    var selectedAgeBandChange = -0.25;
     var selectedValueChange = 0;
     var selectedSuburbChange = 0;
     var brandName = 'AAMI';
@@ -205,7 +208,7 @@ conn.on('open', function () {
       //get wins and premium and insert it to 'pw' collection 
       var af = allFunctions();
       const simulatedPremiumWins = af.calculatePremiumWins(sdrDocs);
-
+      console.log("simulatedPremiumWins");
       console.log(simulatedPremiumWins);
       conn.db.collection('simulatedPremiumWins', function(err, spw) {
         spw.remove({}, function(err) {
@@ -214,6 +217,70 @@ conn.on('open', function () {
       });
     });
   });
+
+
+  // conn.db.collection('simulatedDataRanks', (err, sdr) => {
+  //   //brand, ageBand, rank
+    
+  //   brandNames.forEach((ele,index) => {
+  //     sdr.aggregate([
+  //       {"$group" : {
+  //         "_id":{"brand": ele, "ageBand": "$ageBand", "rank":`${"$"+ele+"Rank"}`},
+  //         wins: {$sum: 1}, asp: {$avg:`${"$"+ele}`},
+  //       }},
+  //       {"$project" : {
+  //         "_id":0, "brand": "$_id.brand", "ageBand": "$_id.ageBand", 
+  //         "rank": "$_id.rank", wins:"$wins", spa: "$asp", 
+  //       }},
+  //     ]).toArray(function(err, docs) {
+  //       conn.db.collection('tempAgeWins', function(err, taw) {
+  //         taw.remove({}, function(err) {
+  //           taw.insert(docs);
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+
+  // conn.db.collection('simulatedDataRanks', (err, sdr) => {
+  //   //brand, ageBand, rank
+    
+  //   brandNames.forEach((ele,index) => {
+  //     sdr.aggregate([
+  //       {"$group" : {
+  //         "_id":{"brand": ele, "siBand": "$siBand", "rank":`${"$"+ele+"Rank"}`},
+  //         wins: {$sum: 1}, asp: {$avg:`${"$"+ele}`},
+  //       }},
+  //       {"$project" : {
+  //         "_id":0, "brand": "$_id.brand", "siBand": "$_id.siBand", 
+  //         "rank": "$_id.rank", wins:"$wins", spa: "$asp", 
+  //       }},
+  //     ]).toArray(function(err, docs) {
+  //       conn.db.collection('tempSiWins', function(err, taw) {
+  //         taw.remove({}, function(err) {
+  //           taw.insert(docs);
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
+
+  // conn.db.collection('simulatedDataRanks', (err, sdr) => {
+  //   //brand, ageBand, rank
+
+  //   brandNames.forEach((ele,index) => {
+  //     sdr.aggregate([
+  //       {"$group" : {"_id": {"brand": ele, "ageBand": "$ageBand"},quotes: {$sum: 1}}},
+  //       {"$project" : {"_id":0, "brand": "$_id.brand", "ageBand": "$_id.ageBand", "quotes": "$quotes"}}
+  //     ]).toArray(function(err, docs) {
+  //       conn.db.collection('tempAgeQuotes', function(err, taq) {
+  //         taq.remove({}, function(err) {
+  //           taq.insert(docs);
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 
   conn.db.collection('premiumWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
