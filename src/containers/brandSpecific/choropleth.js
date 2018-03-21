@@ -22,7 +22,7 @@ class Choropleth extends Component {
 
     componentDidMount() {
         this.geoMap = L.map('geoMapId').setView([-37.814, 144.96332], 10);
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=sk.eyJ1IjoiZGVlcGFrNnNwIiwiYSI6ImNqZTEyYnRmcTNzYWgyd3QzOHd1dzA1dGgifQ.glvYBXpk5_BtBvckbtHdEw', {
+        L.tileLayer('https://api.tiles.mapbox.com/v4/mapbox.streets/page.html?access_token=sk.eyJ1IjoiZGVlcGFrNnNwIiwiYSI6ImNqZTEyYnRmcTNzYWgyd3QzOHd1dzA1dGgifQ.glvYBXpk5_BtBvckbtHdEw', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 18,
             id: 'mapbox.streets'

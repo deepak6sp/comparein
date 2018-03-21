@@ -4,6 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: [
         'webpack-hot-middleware/client',
+        'whatwg-fetch',
         './src/index.js'
     ],
     output: {
