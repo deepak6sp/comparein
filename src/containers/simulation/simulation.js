@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getPremiumWins} from '../../actions/marketSummary';
-import { VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
+import {getSimulatedPremiumWins} from '../../actions/simulation';
+import { VictoryStack, VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
 
 class Simulation extends Component {
 
@@ -12,6 +13,7 @@ class Simulation extends Component {
 
     componentDidMount() {
       this.props.getPremiumWins();
+      this.props.getSimulatedPremiumWins();
     }
 
     _handleSelectedBrand(name) {
@@ -34,13 +36,24 @@ class Simulation extends Component {
             premium.push({'brand':ele.brand,'premium':ele.premium});
           })
 
-          console.log(premium);
-        
+          let simulatedNumberOfWins = [];
+          let simulatedBrandNames = [];
+          let simulatedNumberOfDisplayBars = [];
+
+          if(this.props.simulationDetails.length != 0) {
+
+            this.props.simulationDetails[0].forEach((ele,i) => {
+              simulatedBrandNames.push(ele.brand);
+              simulatedNumberOfDisplayBars.push(i++);
+              simulatedNumberOfWins.push({'brand':ele.brand,'wins':ele.wins});
+            })
+          }
 
           return (
             <main className='market-summary-page'>
               <div className='market-summary-wrapper'>
                 <section className='graph-container'>
+                  <h2>Before Simulation</h2>
                   <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                     <VictoryAxis
                       tickValues={numberOfDisplayBars}
@@ -84,22 +97,89 @@ class Simulation extends Component {
                               }
                             }
                           }]} />
-                      <VictoryLine
-                        style={{
-                          data: { stroke: "#c43a31" },
-                        }}
-                        data={premium}
-                        x="brand"
-                        y="premium"
-                      />
-                      <VictoryScatter
-                        style={{
-                          data: { stroke: "#c43a31" },
-                        }}
-                        data={premium}
-                        x="brand"
-                        y="premium"
-                      />
+                     
+                  </VictoryChart>
+
+                  <h2>After Simulation</h2>
+                  <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  
+                    <VictoryAxis
+                      tickValues={numberOfDisplayBars}
+                      tickFormat={brandNames}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      tickFormat={(x) => (`${x}`)}
+                    />
+                    <VictoryGroup>
+                      <VictoryBar
+                          style={{
+                            data: { fill: "#4DB6AC", width: 40 }
+                          }}
+                          data={numberOfWins}
+                          x="brand"
+                          y="wins"
+                          events={[{
+                            target: "data",
+                            eventHandlers: {
+                              onClick: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    this._handleSelectedBrand(props.datum.brand);
+                                  }
+                                }];
+                              },
+                              onMouseEnter: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#1f4b47"})}
+                                  }
+                                }];
+                              },
+                              onMouseLeave: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
+                                  }
+                                }];
+                              }
+                            }
+                          }]} />
+
+                          <VictoryBar
+                          style={{
+                            data: { width: 40, stroke: "#000000", strokeWidth: 3, fillOpacity:0.1 }
+                          }}
+                          data={simulatedNumberOfWins}
+                          x="brand"
+                          y="wins"
+                          events={[{
+                            target: "data",
+                            eventHandlers: {
+                              onClick: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    this._handleSelectedBrand(props.datum.brand);
+                                  }
+                                }];
+                              },
+                              onMouseEnter: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#1f4b47"})}
+                                  }
+                                }];
+                              },
+                              onMouseLeave: () => {
+                                return [{
+                                  mutation: (props) => {
+                                    return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
+                                  }
+                                }];
+                              }
+                            }
+                          }]} />
+                     </VictoryGroup>
                   </VictoryChart>
                 </section>
               </div>
@@ -118,7 +198,10 @@ class Simulation extends Component {
  * @param  {array} state array retrieved from reducer
  * @return {Object}      Object retrived from new state
  */
-const matchStateToProps = state => ({newSummary: state.newSummary});
+const matchStateToProps = state => ({
+  newSummary: state.newSummary,
+  simulationDetails: state.simulationDetails
+});
 
 
 /**
@@ -128,7 +211,7 @@ const matchStateToProps = state => ({newSummary: state.newSummary});
  * @return {Function}          submitText is the function located in Actions
  */
 const matchDispatchToProps = dispatch =>
-    bindActionCreators({getPremiumWins}, dispatch);
+    bindActionCreators({getPremiumWins, getSimulatedPremiumWins}, dispatch);
 
 
 // Bind actions, states and component to the store

@@ -14,6 +14,8 @@ var premiumWinsResult,
     siBandRelResult,
     getSiBandRelResult, colescount=0;
 
+var simulatedPremiumWinsResult;
+
 var brandNames = ["AAMI", "Allianz", "Bingle", "Coles", "RACV"];
 
 function allFunctions() {
@@ -288,6 +290,12 @@ conn.on('open', function () {
     });
   });
 
+  conn.db.collection('simulatedPremiumWins', function(err, coll) {
+    coll.find().toArray(function(err, docs) {
+      simulatedPremiumWinsResult = docs;
+    });
+  });
+
   conn.db.collection('ageQtesWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
       ageQtesWinsResult = docs;
@@ -321,6 +329,12 @@ apiRouter.get('/temp', (req, res) => {
 apiRouter.get('/getPremiumWins', (req, res) => {
   res.send(premiumWinsResult);
 });
+
+apiRouter.get('/getSimulatedPremiumWins', (req, res) => {
+  res.send(simulatedPremiumWinsResult);
+});
+
+
 
 apiRouter.post('/getAgeQtesWins', (req, res) => {
   getAgeQtesWinsResult = ageQtesWinsResult.filter(value => value.brand == req.body.brandName);
