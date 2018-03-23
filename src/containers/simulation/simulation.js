@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {getPremiumWins} from '../../actions/marketSummary';
 import {getSimulatedPremiumWins} from '../../actions/simulation';
-import { VictoryStack, VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
+import { VictoryTooltip, VictoryStack, VictoryChart, VictoryGroup, VictoryLine, VictoryScatter, VictoryBar, VictoryAxis } from 'victory';
 
 class Simulation extends Component {
 
@@ -32,7 +32,7 @@ class Simulation extends Component {
           this.props.newSummary[0].forEach((ele,i) => {
             brandNames.push(ele.brand);
             numberOfDisplayBars.push(i++);
-            numberOfWins.push({'brand':ele.brand,'wins':ele.wins});
+            numberOfWins.push({'brand':ele.brand,'wins':ele.wins, label: "wins "+ele.wins});
             premium.push({'brand':ele.brand,'premium':ele.premium});
           })
 
@@ -45,7 +45,7 @@ class Simulation extends Component {
             this.props.simulationDetails[0].forEach((ele,i) => {
               simulatedBrandNames.push(ele.brand);
               simulatedNumberOfDisplayBars.push(i++);
-              simulatedNumberOfWins.push({'brand':ele.brand,'wins':ele.wins});
+              simulatedNumberOfWins.push({'brand':ele.brand,'wins':ele.wins, label:  "wins "+ele.wins});
             })
           }
 
@@ -54,7 +54,7 @@ class Simulation extends Component {
               <div className='market-summary-wrapper'>
                 <section className='graph-container'>
                   <h2>Before Simulation</h2>
-                  <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  <VictoryChart domainPadding={10} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                     <VictoryAxis
                       tickValues={numberOfDisplayBars}
                       tickFormat={brandNames}
@@ -68,6 +68,7 @@ class Simulation extends Component {
                           style={{
                             data: { fill: "#4DB6AC", width: 40 }
                           }}
+                          labelComponent={<VictoryTooltip/>}
                           data={numberOfWins}
                           x="brand"
                           y="wins"
@@ -101,7 +102,7 @@ class Simulation extends Component {
                   </VictoryChart>
 
                   <h2>After Simulation</h2>
-                  <VictoryChart domainPadding={30} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  <VictoryChart domainPadding={10} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                   
                     <VictoryAxis
                       tickValues={numberOfDisplayBars}
@@ -111,11 +112,11 @@ class Simulation extends Component {
                       dependentAxis
                       tickFormat={(x) => (`${x}`)}
                     />
-                    <VictoryGroup>
                       <VictoryBar
                           style={{
                             data: { fill: "#4DB6AC", width: 40 }
                           }}
+                          labelComponent={<VictoryTooltip/>}
                           data={numberOfWins}
                           x="brand"
                           y="wins"
@@ -150,6 +151,7 @@ class Simulation extends Component {
                           style={{
                             data: { width: 40, stroke: "#000000", strokeWidth: 3, fillOpacity:0.1 }
                           }}
+                          labelComponent={<VictoryTooltip/>}
                           data={simulatedNumberOfWins}
                           x="brand"
                           y="wins"
@@ -179,7 +181,6 @@ class Simulation extends Component {
                               }
                             }
                           }]} />
-                     </VictoryGroup>
                   </VictoryChart>
                 </section>
               </div>

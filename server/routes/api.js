@@ -163,7 +163,7 @@ conn.on('open', function () {
     var selectedAgeBandChange = -0.25;
     var selectedValueChange = 0;
     var selectedSuburbChange = 0;
-    var brandName = 'AAMI';
+    var brandName = 'Bingle';
 
     
     rdr.find({}).toArray(function(err, rdrDocs) {
