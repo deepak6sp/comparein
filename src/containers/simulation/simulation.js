@@ -54,7 +54,7 @@ class Simulation extends Component {
               <div className='market-summary-wrapper'>
                 <section className='graph-container'>
                   <h2>Before Simulation</h2>
-                  <VictoryChart domainPadding={10} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  <VictoryChart animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                     <VictoryAxis
                       tickValues={numberOfDisplayBars}
                       tickFormat={brandNames}
@@ -102,7 +102,7 @@ class Simulation extends Component {
                   </VictoryChart>
 
                   <h2>After Simulation</h2>
-                  <VictoryChart domainPadding={10} animate={{ delay: 0, duration: 500, easing: "bounce" }}>
+                  <VictoryChart  animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                   
                     <VictoryAxis
                       tickValues={numberOfDisplayBars}

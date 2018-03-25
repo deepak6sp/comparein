@@ -1,5 +1,5 @@
 export const getSimulatedPremiumWins = () => {
-    let response = fetch('http://localhost:8080/api/getSimulatedPremiumWins')
+    let response = fetch('http://localhost:3000/api/getSimulatedPremiumWins')
     .then((res) => res.json())
     .then(val => val);
   

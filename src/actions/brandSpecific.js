@@ -1,7 +1,7 @@
 // this is for age quotes and relativity values
 
 export const getAgeQtesWins = () => {
-  let response = fetch('http://localhost:8080/api/getAgeQtesWins')
+  let response = fetch('http://localhost:3000/api/getAgeQtesWins')
   .then((res) => res.json())
   .then(val => val);
 
@@ -14,7 +14,7 @@ export const getAgeQtesWins = () => {
 
 export const generateAgeQtesWinsApi = (brandName) => {
   var data = {'brandName':brandName};
-  let response = fetch('http://localhost:8080/api/getAgeQtesWins', {
+  let response = fetch('http://localhost:3000/api/getAgeQtesWins', {
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -33,7 +33,7 @@ export const generateAgeQtesWinsApi = (brandName) => {
 
 
 export const getAgeBandRel = () => {
-  let response = fetch('http://localhost:8080/api/getAgeBandRel')
+  let response = fetch('http://localhost:3000/api/getAgeBandRel')
   .then((res) => res.json())
   .then(val => val);
 
@@ -46,7 +46,7 @@ export const getAgeBandRel = () => {
 
 export const generateAgeBandRelApi = (brandName) => {
   var data = {'brandName':brandName};
-  let response = fetch('http://localhost:8080/api/getAgeBandRel', {
+  let response = fetch('http://localhost:3000/api/getAgeBandRel', {
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -67,7 +67,7 @@ export const generateAgeBandRelApi = (brandName) => {
 //this is for si quotes and relativity values
 
 export const getSiQtesWins = () => {
-  let response = fetch('http://localhost:8080/api/getSiQtesWins')
+  let response = fetch('http://localhost:3000/api/getSiQtesWins')
   .then((res) => res.json())
   .then(val => val);
 
@@ -81,7 +81,7 @@ export const getSiQtesWins = () => {
 
 export const generateSiQtesWinsApi = (brandName) => {
   var data = {'brandName':brandName};
-  let response = fetch('http://localhost:8080/api/getSiQtesWins', {
+  let response = fetch('http://localhost:3000/api/getSiQtesWins', {
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -100,7 +100,7 @@ export const generateSiQtesWinsApi = (brandName) => {
 
 
 export const getSiBandRel = () => {
-  let response = fetch('http://localhost:8080/api/getSiBandRel')
+  let response = fetch('http://localhost:3000/api/getSiBandRel')
   .then((res) => res.json())
   .then(val => val);
 
@@ -113,7 +113,7 @@ export const getSiBandRel = () => {
 
 export const generateSiBandRelApi = (brandName) => {
   var data = {'brandName':brandName};
-  let response = fetch('http://localhost:8080/api/getSiBandRel', {
+  let response = fetch('http://localhost:3000/api/getSiBandRel', {
     method: 'post',
     headers: {
       'Accept': 'application/json',
