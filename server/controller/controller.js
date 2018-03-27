@@ -202,20 +202,4 @@ conn.on('open', function () {
   //   });
   // });
 
-
-
-  conn.db.collection('simulatedPremiumWins', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      simulatedPremiumWinsResult = docs;
-    });
-  });
-
-
-
-
-
-
-
-
-
 });
