@@ -20,7 +20,8 @@ conn.on('error', console.error.bind(console, 'MongoDB connection error:'));
 conn.on('open', function () {
   conn.db.collection('rawData', function(err, coll) {
       
-      coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1,_id:0}).toArray(function(err, docs) {
+      coll.find({}).project({ AAMI: 1, Allianz: 1, Bingle: 1, Coles: 1, RACV: 1,_id:0}).toArray()
+      .then(function(err, docs) {
 
           // get ranks, join with current rawData and
           // insert records to 'rawDataRanks' collection
@@ -201,11 +202,7 @@ conn.on('open', function () {
   //   });
   // });
 
-  conn.db.collection('premiumWins', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      premiumWinsResult = docs;
-    });
-  });
+
 
   conn.db.collection('simulatedPremiumWins', function(err, coll) {
     coll.find().toArray(function(err, docs) {
@@ -213,28 +210,12 @@ conn.on('open', function () {
     });
   });
 
-  conn.db.collection('ageQtesWins', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      ageQtesWinsResult = docs;
-    });
-  });
 
-  conn.db.collection('ageBandRel', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      ageBandRelResult = docs;
-    });
-  });
 
-  conn.db.collection('siQtesWins', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      siQtesWinsResult = docs;
-    });
-  });
 
-  conn.db.collection('siBandRel', function(err, coll) {
-    coll.find().toArray(function(err, docs) {
-      siBandRelResult = docs;
-    });
-  });
+
+
+
+
 
 });
