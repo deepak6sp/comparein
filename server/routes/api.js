@@ -4,6 +4,8 @@ const express = require('express');
 const apiRouter =  express.Router();
 const conn = require('../database');
 
+const controller = require('../controller/controller');
+
 var ageQtesWinsResult,
     ageBandRelResult,
     siQtesWinsResult,

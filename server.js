@@ -10,12 +10,13 @@ const compiler = webpack(config);
 
 require('./server/database');
 
-const clientRouter = require('./server/routes/client');
+// const clientRouter = require('./server/routes/client');
+// const adminRouter = require('./server/routes/admin');
 const apiRouter = require('./server/routes/api');
-const adminRouter = require('./server/routes/admin');
 
-// app.use(require('webpack-dev-middleware')(compiler));
-// app.use(require('webpack-hot-middleware')(compiler));
+
+app.use(require('webpack-dev-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler));
 
 
 app.use(bodyParser.json());
@@ -29,13 +30,12 @@ app.use(function(req, res, next) {
     next();
   });
   
-app.use('/', clientRouter);
-
+// app.use('/', clientRouter);
+// app.use('/admin', adminRouter);
 app.use('/api', apiRouter);
-app.use('/admin', adminRouter);
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'index.html'));
-// });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen('3000');

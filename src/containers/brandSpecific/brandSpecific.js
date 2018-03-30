@@ -37,15 +37,15 @@ class BrandSpecific extends Component {
     componentDidMount() {
         // this is for age quotes and relativity values
       this.props.generateAgeQtesWinsApi(this.props.brandName);
-      this.props.getAgeQtesWins(this.props.brandName);
+      //this.props.getAgeQtesWins(this.props.brandName);
       this.props.generateAgeBandRelApi(this.props.brandName);
-      this.props.getAgeBandRel(this.props.brandName);
+      //this.props.getAgeBandRel(this.props.brandName);
 
       // this is for si quotes and relativity values
       this.props.generateSiQtesWinsApi(this.props.brandName);
-      this.props.getSiQtesWins(this.props.brandName);
+      //this.props.getSiQtesWins(this.props.brandName);
       this.props.generateSiBandRelApi(this.props.brandName);
-      this.props.getSiBandRel(this.props.brandName);
+      //this.props.getSiBandRel(this.props.brandName);
      
     }
 
