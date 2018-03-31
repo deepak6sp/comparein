@@ -25,19 +25,17 @@ const generateSimulatedDataRanks = (data) => {
             let newVal = 0;
             selectedAgeBandChange.forEach((bandChange, index) => {
                 if(ele.ageBand == bandChange.ageBand) {
-                    
                     // get new value of simulation
                     newVal = ele[brandName]*
                     (1+parseFloat(bandChange.simulatedValue))*
                     (1+parseFloat(selectedSuburbChange));
                     
-                    // if value has not changed
+                    //if value has not changed
                     if(newVal != 0){
                         ele[brandName] = newVal;
                     } else {
                         ele[brandName] = ele[brandName];
                     }
-                    
                     
                 }
             });
@@ -47,7 +45,7 @@ const generateSimulatedDataRanks = (data) => {
                     newVal = newVal*
                     (1+parseFloat(bandChange.simulatedValue))*
                     (1+parseFloat(selectedSuburbChange));
-        
+
                     // if value has not changed
                     if(newVal != 0){
                         ele[brandName] = newVal;
@@ -56,9 +54,8 @@ const generateSimulatedDataRanks = (data) => {
                     }
                 }
             });
-            newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV})
+            newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV});
         });
-
         // get ranks
         const ranksArray = sharedFunctions.createRankDb(newDocs);
 
