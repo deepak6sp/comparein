@@ -7,7 +7,6 @@ const conn = require('../database');
 const generateRawDataRanks = require('../controller/generateData/rawDataRanks');
 const generateSimulatedDataRanks = require('../controller/generateSimulatedData/simulatedDataRanks');
 
-//const controller = require('../controller/controller');
 conn.on('open', function () {
   console.log("opened");
   generateRawDataRanks();

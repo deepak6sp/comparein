@@ -7,14 +7,12 @@ const generateSimulatedSiQtesWins = require('./simulatedSiQtesWins');
 
 const generateSimulatedDataRanks = (data) => {
     console.log('generateSimulatedDataRanks');
-    // simulated changed values goes here
-    // var selectedAgeBand = 'Below 25';
-    // var selectedAgeBandChange = -0.25;
+    console.log(data);
 
-    var selectedAgeBandChange = [data];
-    var selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: '-0.25'}, {siBand: '5K-10k', simulatedValue: '-0.25'}]
-    var selectedSuburbChange = 0;
-    var brandName = 'AAMI';
+    let selectedAgeBandChange = [data];
+    let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: '-0.25'}, {siBand: '5K-10k', simulatedValue: '-0.25'}]
+    let selectedSuburbChange = 0;
+    let brandName = 'AAMI';
 
     conn.db.collection('rawData').find({}).toArray()
     .then(rdrDocs => {
