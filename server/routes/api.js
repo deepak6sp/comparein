@@ -17,7 +17,9 @@ conn.on('open', function () {
 var ageQtesWinsResult,
     ageBandRelResult,
     siQtesWinsResult,
-    siBandRelResult;
+    siBandRelResult,
+    simulatedAgeQtesWinsResult,
+    simulatedSiQtesWinsResult;
 
 
 // all main routes
@@ -71,6 +73,7 @@ apiRouter.post('/getSiBandRel', (req, res) => {
 
 apiRouter.post('/generateSimulatedDataRanks', (req,res) => {
   let data = req.body;
+  console.log(data);
   generateSimulatedDataRanks(data);
 });
 
@@ -80,6 +83,26 @@ apiRouter.get('/getSimulatedPremiumWins', (req, res) => {
   .then(docs => res.send(docs));
 });
 
+apiRouter.post('/getSimulatedAgeQtesWins', (req, res) => {
+  conn.db.collection('simulatedAgeQtesWins').find().toArray()
+  .then(docs => {
+     simulatedAgeQtesWinsResult = docs.filter(value => value.brand == req.body.brandName);
+     res.send(simulatedAgeQtesWinsResult);
+  });
+}).get('/getSimulatedAgeQtesWins', (req, res) => {
+  res.send(simulatedAgeQtesWinsResult);
+});
+
+apiRouter.post('/getSimulatedSiQtesWins', (req, res) => {
+  conn.db.collection('simulatedSiQtesWins').find().toArray()
+  .then(docs => {
+    console.log(docs);
+      simulatedSiQtesWinsResult = docs.filter(value => value.brand == req.body.brandName);
+      res.send(simulatedSiQtesWinsResult);
+  });
+}).get('/getSimulatedSiQtesWins', (req, res) => {
+  res.send(simulatedSiQtesWinsResult);
+});
 
 
 module.exports = apiRouter;
