@@ -2,20 +2,23 @@ const conn = require('../../database');
 const sharedFunctions = require("../shared_functions.js");
 
 const generateSimulatedPremiumWins = require('./simulatedPremiumWins');
+const generateSimulatedAgeQtesWins = require('./simulatedAgeQtesWins');
+const generateSimulatedSiQtesWins = require('./simulatedSiQtesWins');
 
-const generateSimulatedDataRanks = () => {
+const generateSimulatedDataRanks = (data) => {
+    console.log('generateSimulatedDataRanks');
     // simulated changed values goes here
     // var selectedAgeBand = 'Below 25';
     // var selectedAgeBandChange = -0.25;
 
-    var selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: '-0.25'}, {ageBand: '45-54', simulatedValue: '-0.25'}];
+    var selectedAgeBandChange = [data];
     var selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: '-0.25'}, {siBand: '5K-10k', simulatedValue: '-0.25'}]
     var selectedSuburbChange = 0;
     var brandName = 'AAMI';
 
     conn.db.collection('rawData').find({}).toArray()
     .then(rdrDocs => {
-        
+
         // calculations here
         rdrDocs.forEach((ele, i) => {
             let newVal = 0;
@@ -55,11 +58,14 @@ const generateSimulatedDataRanks = () => {
             newSimulatedData.push(Object.assign(doc, ranksArray[index]));
         });
 
-        conn.db.collection('simulatedDataRanks').remove({})
+        console.log("create simulatedDataRanks");
+        conn.db.collection('simulatedDataRanks').deleteMany({})
         .then(() => {
             conn.db.collection('simulatedDataRanks').insert(newSimulatedData)
             .then(() => {
                 generateSimulatedPremiumWins();
+                generateSimulatedAgeQtesWins();
+                generateSimulatedSiQtesWins();
             });
         });
     });

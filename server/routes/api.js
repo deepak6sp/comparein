@@ -4,7 +4,16 @@ const express = require('express');
 const apiRouter =  express.Router();
 const conn = require('../database');
 
-const controller = require('../controller/controller');
+const generateRawDataRanks = require('../controller/generateData/rawDataRanks');
+const generateSimulatedDataRanks = require('../controller/generateSimulatedData/simulatedDataRanks');
+
+//const controller = require('../controller/controller');
+conn.on('open', function () {
+  console.log("opened");
+  generateRawDataRanks();
+  
+});
+
 
 var ageQtesWinsResult,
     ageBandRelResult,
@@ -60,6 +69,13 @@ apiRouter.post('/getSiBandRel', (req, res) => {
 
 
 //all simulated routes
+
+apiRouter.post('/generateSimulatedDataRanks', (req,res) => {
+  let data = req.body;
+  generateSimulatedDataRanks(data);
+});
+
+
 apiRouter.get('/getSimulatedPremiumWins', (req, res) => {
   conn.db.collection('simulatedPremiumWins').find().toArray()
   .then(docs => res.send(docs));
