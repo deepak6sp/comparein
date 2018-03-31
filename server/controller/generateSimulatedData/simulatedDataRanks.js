@@ -9,25 +9,36 @@ const generateSimulatedDataRanks = (data) => {
     console.log('generateSimulatedDataRanks');
     console.log(data);
 
-    let selectedAgeBandChange = [data];
-    let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: '-0.25'}, {siBand: '5K-10k', simulatedValue: '-0.25'}]
+    // let selectedAgeBandChange = [data.ageBandChnage];
+    // let selectedSiBandChange = [data.siBandChange];
+    let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0},{ageBand: '45-54', simulatedValue: 0}];
+    let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: 0}]
     let selectedSuburbChange = 0;
     let brandName = 'AAMI';
 
     conn.db.collection('rawData').find({}).toArray()
     .then(rdrDocs => {
 
-        // calculations here
+        let newDocs = [];
+        // simulation calculations here
         rdrDocs.forEach((ele, i) => {
             let newVal = 0;
             selectedAgeBandChange.forEach((bandChange, index) => {
                 if(ele.ageBand == bandChange.ageBand) {
+                    
                     // get new value of simulation
                     newVal = ele[brandName]*
                     (1+parseFloat(bandChange.simulatedValue))*
                     (1+parseFloat(selectedSuburbChange));
-        
-                    ele[brandName] = newVal;
+                    
+                    // if value has not changed
+                    if(newVal != 0){
+                        ele[brandName] = newVal;
+                    } else {
+                        ele[brandName] = ele[brandName];
+                    }
+                    
+                    
                 }
             });
             selectedSiBandChange.forEach((bandChange, index) => {
@@ -37,14 +48,14 @@ const generateSimulatedDataRanks = (data) => {
                     (1+parseFloat(bandChange.simulatedValue))*
                     (1+parseFloat(selectedSuburbChange));
         
-                    ele[brandName] = newVal;
+                    // if value has not changed
+                    if(newVal != 0){
+                        ele[brandName] = newVal;
+                    } else {
+                        ele[brandName] = ele[brandName];
+                    }
                 }
-            })
-        });
-
-        let newDocs = [];
-        // get brand for assigning ranks
-        rdrDocs.forEach((ele,i) => {
+            });
             newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV})
         });
 
