@@ -1,6 +1,6 @@
 
 export const getPremiumWins = () => {
-  let response = fetch('http://localhost:3000/api/getPremiumWins')
+  let response = fetch('/api/getPremiumWins')
   .then((res) => res.json())
   .then(val => val);
 

@@ -9,6 +9,11 @@ class Simulation extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+          showMarketSummary: false,
+          showAgeQuotes: false,
+          showSiQuotes: false
+        }
     }
 
     componentDidMount() {
@@ -21,6 +26,17 @@ class Simulation extends Component {
       window.location = '/brand-specific/'+name;
     }
 
+    _showMarketSummary() {
+      this.setState({showMarketSummary: true});
+    }
+
+    _showAgeQuotes() {
+      this.setState({showAgeQuotes: true});
+    }
+
+    _showSiQuotes() {
+      this.setState({showSiQuotes: true});
+    }
     render() {
 
         if(this.props.newSummary.length != 0) {
@@ -41,7 +57,6 @@ class Simulation extends Component {
           let simulatedNumberOfDisplayBars = [];
 
           if(this.props.simulationDetails.length != 0) {
-
             this.props.simulationDetails[0].forEach((ele,i) => {
               simulatedBrandNames.push(ele.brand);
               simulatedNumberOfDisplayBars.push(i++);
@@ -53,55 +68,17 @@ class Simulation extends Component {
             <main className='market-summary-page'>
               <div className='market-summary-wrapper'>
                 <section className='graph-container'>
-                  <h2>Before Simulation</h2>
-                  <VictoryChart animate={{ delay: 0, duration: 500, easing: "bounce" }}>
-                    <VictoryAxis
-                      tickValues={numberOfDisplayBars}
-                      tickFormat={brandNames}
-                    />
-                    <VictoryAxis
-                      dependentAxis
-                      tickFormat={(x) => (`${x}`)}
-                    />
+                 <a 
+                  className="button market-summary"
+                  onClick={this._showMarketSummary.bind(this)}>Show Market Summary</a>
+                <a 
+                  className="button age-quotes"
+                  onClick={this._showAgeQuotes.bind(this)}>Show Age Quotes Wins</a>
+                <a 
+                  className="button si-quotes"
+                  onClick={this._showSiQuotes.bind(this)}>Show SI Quotes Wins</a>
 
-                      <VictoryBar
-                          style={{
-                            data: { fill: "#4DB6AC", width: 40 }
-                          }}
-                          labelComponent={<VictoryTooltip/>}
-                          data={numberOfWins}
-                          x="brand"
-                          y="wins"
-                          events={[{
-                            target: "data",
-                            eventHandlers: {
-                              onClick: () => {
-                                return [{
-                                  mutation: (props) => {
-                                    this._handleSelectedBrand(props.datum.brand);
-                                  }
-                                }];
-                              },
-                              onMouseEnter: () => {
-                                return [{
-                                  mutation: (props) => {
-                                    return {style: Object.assign(props.style, {fill: "#1f4b47"})}
-                                  }
-                                }];
-                              },
-                              onMouseLeave: () => {
-                                return [{
-                                  mutation: (props) => {
-                                    return {style: Object.assign(props.style, {fill: "#4DB6AC"})}
-                                  }
-                                }];
-                              }
-                            }
-                          }]} />
-                     
-                  </VictoryChart>
-
-                  <h2>After Simulation</h2>
+                  {this.state.showMarketSummary &&
                   <VictoryChart  animate={{ delay: 0, duration: 500, easing: "bounce" }}>
                   
                     <VictoryAxis
@@ -182,6 +159,7 @@ class Simulation extends Component {
                             }
                           }]} />
                   </VictoryChart>
+                  }
                 </section>
               </div>
             </main>
