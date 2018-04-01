@@ -8,6 +8,11 @@ clientRouter.get('/', (req, res) => {
     res.redirect('/login');
 });
 
+clientRouter.get('/simulation', (req, res) => {
+    res.redirect('/simulation/market-summary');
+});
+
+
 
 
 module.exports = clientRouter;

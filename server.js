@@ -10,9 +10,10 @@ const compiler = webpack(config);
 
 require('./server/database');
 
-const clientRouter = require('./server/routes/client');
+// const clientRouter = require('./server/routes/client');
+// const adminRouter = require('./server/routes/admin');
 const apiRouter = require('./server/routes/api');
-const adminRouter = require('./server/routes/admin');
+
 
 app.use(require('webpack-dev-middleware')(compiler));
 app.use(require('webpack-hot-middleware')(compiler));
@@ -22,15 +23,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('images'))
-app.use('/', clientRouter);
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
+// app.use('/', clientRouter);
+// app.use('/admin', adminRouter);
 app.use('/api', apiRouter);
-app.use('/admin', adminRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
-
-app.listen('8080');
+app.listen('3000');

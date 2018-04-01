@@ -30,6 +30,7 @@
       }
     }
 
+  
     .iframe-container {
       margin-top: 5rem;
       iframe {
@@ -51,6 +52,15 @@
       }
     }
 
+    .leaflet-container {
+      position: relative;
+      height: 600px;
+      width: 600px;
+      margin-bottom: 10vh;
+    }
+
 
   }
 }
+
+

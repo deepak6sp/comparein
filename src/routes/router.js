@@ -6,6 +6,7 @@ import Header from '../components/header';
 import LoginForm from '../containers/loginForm';
 import MarketSummary from '../containers/marketSummary';
 import BrandSpecific from '../containers/brandSpecific';
+import Simulation from '../containers/simulation';
 
 
 const Router = () =>
@@ -16,6 +17,7 @@ const Router = () =>
           <Route path="/login" component={ () => <LoginForm/> }/>
           <Route path="/market-summary" component={() => <MarketSummary/> } />
           <Route path="/brand-specific" component={BranchSpecific} />
+          <Route path="/simulation/market-summary" component={Simulation} />
           <Route path="/admin" component={() => <LoginForm loginType='admin'/> } />
        </div>
     </BrowserRouter>;
