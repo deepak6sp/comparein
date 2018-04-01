@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AgeSiGraph from './ageSiGraph';
 
+
 class AgeQuotes extends Component {
     constructor(props) {
         super(props);
@@ -13,8 +14,42 @@ class AgeQuotes extends Component {
             siRedLabel: "Quoted Premium",
             showAgeRankSlider: true,
             showSiRankSlider: true,
+            simulatedValue: '',
+            ageBands: [{ ageBand: '', simulatedValue: '' }],
         };
     }
+
+
+
+    _handleAgeBandValue(idx,evt) {
+        const newAgeBands = this.state.ageBands.map((ageBand, sidx) => {
+            if (idx !== sidx) return ageBand;
+            let sv, ab;
+            if(evt.target.type == 'text') {
+                sv = evt.target.value;
+                return { ...ageBand, simulatedValue: sv };
+            } else {
+                ab = evt.target.value;
+                return { ...ageBand, ageBand: ab };
+            }
+            
+            // return { ...ageBand, ageBand: ab, simulatedValue: sv };
+        });
+            
+        this.setState({ ageBands: newAgeBands });
+
+        // pass back to parent - simulation.js
+        this.props.onAgeBandChanges(newAgeBands);
+    }
+    
+    _handleAddAgeBand() {
+        this.setState({ ageBands: this.state.ageBands.concat([{ simulatedValue: '' }]) });
+    }
+    
+    _handleRemoveAgeBand(idx) {
+        this.setState({ ageBands: this.state.ageBands.filter((s, sidx) => idx !== sidx) });
+    }
+
     render() {
         // this is for age quotes and relativity values
         let ageQtesAndRel = {
@@ -74,21 +109,56 @@ class AgeQuotes extends Component {
                 
             });
 
+            const ageBandsAvailable= ['Select Age Group', 'Below 25', '25-34', '35-44', '45-54', '55-64', '65-74', '75 Plus']
+
+            let options = ageBandsAvailable.map((ele, key) => {
+                    return <option key={key} value={ele}>{ele}</option>;
+            });
+
             return (
-                <AgeSiGraph
-                    numberOfQuotes= {ageQtesAndRel.numberOfQuotes}
-                    numberOfWins = {ageQtesAndRel.numberOfWins}
-                    quotedPremiumOrRelativityValue = {ageQtesAndRel.quotedPremiumOrRelativityValue}
-                    XaxisDisplayText = {ageQtesAndRel.XaxisDisplayText}
-                    numberOfDisplayBars = {ageQtesAndRel.numberOfDisplayBars}
-                    YquotedPremiumOrRelativityText = {ageQtesAndRel.YquotedPremiumOrRelativityText}
-                    
-                    simulatedNumberOfQuotes= {simulatedAgeQtesAndRel.numberOfQuotes}
-                    simulatedNumberOfWins = {simulatedAgeQtesAndRel.numberOfWins}
-                    simulatedQuotedPremiumOrRelativityValue = {simulatedAgeQtesAndRel.quotedPremiumOrRelativityValue}
-                    simulatedXaxisDisplayText = {simulatedAgeQtesAndRel.XaxisDisplayText}
-                    simulatedNumberOfDisplayBars = {simulatedAgeQtesAndRel.numberOfDisplayBars}
-                    simulatedYquotedPremiumOrRelativityText = {simulatedAgeQtesAndRel.YquotedPremiumOrRelativityText}/>
+                <div>
+                    {(this.props.editMode) && 
+                    <div>
+                        {this.state.ageBands.map((ageBandSingle, id) => {
+                            return (
+                                <div className="age-band-input-holder" key={id}>
+                                    <select 
+                                        className="ageBandSelect" 
+                                        onChange={this._handleAgeBandValue.bind(this,id)}
+                                        value={ageBandSingle.ageBand}>
+                                        {options}
+                                    </select>
+                                    <input
+                                        id={id}
+                                        type="text"
+                                        placeholder={`age band value in %`}
+                                        value={ageBandSingle.simulatedValue}
+                                        onChange={this._handleAgeBandValue.bind(this,id)}/>% 
+                                    <button type="button" onClick={this._handleRemoveAgeBand.bind(this,id)} className="small">-</button>
+                                    
+                                </div>
+                            )})
+                        }
+                        
+                        <button type="button" onClick={this._handleAddAgeBand.bind(this)} className="small">Add Age Band</button>
+                        
+                    </div>
+                    }
+                    <AgeSiGraph
+                        numberOfQuotes= {ageQtesAndRel.numberOfQuotes}
+                        numberOfWins = {ageQtesAndRel.numberOfWins}
+                        quotedPremiumOrRelativityValue = {ageQtesAndRel.quotedPremiumOrRelativityValue}
+                        XaxisDisplayText = {ageQtesAndRel.XaxisDisplayText}
+                        numberOfDisplayBars = {ageQtesAndRel.numberOfDisplayBars}
+                        YquotedPremiumOrRelativityText = {ageQtesAndRel.YquotedPremiumOrRelativityText}
+                        
+                        simulatedNumberOfQuotes= {simulatedAgeQtesAndRel.numberOfQuotes}
+                        simulatedNumberOfWins = {simulatedAgeQtesAndRel.numberOfWins}
+                        simulatedQuotedPremiumOrRelativityValue = {simulatedAgeQtesAndRel.quotedPremiumOrRelativityValue}
+                        simulatedXaxisDisplayText = {simulatedAgeQtesAndRel.XaxisDisplayText}
+                        simulatedNumberOfDisplayBars = {simulatedAgeQtesAndRel.numberOfDisplayBars}
+                        simulatedYquotedPremiumOrRelativityText = {simulatedAgeQtesAndRel.YquotedPremiumOrRelativityText}/>
+                </div>
             )
         } else {
             return <div> Generating Graph </div>

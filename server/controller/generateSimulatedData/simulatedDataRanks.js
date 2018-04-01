@@ -11,51 +11,57 @@ const generateSimulatedDataRanks = (data) => {
 
     // let selectedAgeBandChange = [data.ageBandChnage];
     // let selectedSiBandChange = [data.siBandChange];
-    let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0},{ageBand: '45-54', simulatedValue: 0}];
+    // let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0},{ageBand: '25-34', simulatedValue: 0}];
+    
+    let selectedAgeBandChange = data.ageBandChanges;
     let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: 0}]
     let selectedSuburbChange = 0;
     let brandName = 'AAMI';
 
     conn.db.collection('rawData').find({}).toArray()
     .then(rdrDocs => {
+        
+            let newDocs = [];
+            // simulation calculations here
+            console.log(selectedAgeBandChange);
+            rdrDocs.forEach((ele, i) => {
+                if(selectedAgeBandChange!= 'reset') {
+                    let newVal = 0;
+                    selectedAgeBandChange.forEach((bandChange, index) => {
+                        if(ele.ageBand == bandChange.ageBand) {
+                            // get new value of simulation
+                            newVal = ele[brandName]*
+                            (1+parseFloat(bandChange.simulatedValue))*
+                            (1+parseFloat(selectedSuburbChange));
+                            
+                            //if value has not changed
+                            if(newVal != 0){
+                                ele[brandName] = newVal;
+                            } else {
+                                ele[brandName] = ele[brandName];
+                            }
+                            
+                        }
+                    });
+                    selectedSiBandChange.forEach((bandChange, index) => {
+                        if(ele.siBand == bandChange.siBand) {
+                            // get new value of simulation
+                            newVal = newVal*
+                            (1+parseFloat(bandChange.simulatedValue))*
+                            (1+parseFloat(selectedSuburbChange));
 
-        let newDocs = [];
-        // simulation calculations here
-        rdrDocs.forEach((ele, i) => {
-            let newVal = 0;
-            selectedAgeBandChange.forEach((bandChange, index) => {
-                if(ele.ageBand == bandChange.ageBand) {
-                    // get new value of simulation
-                    newVal = ele[brandName]*
-                    (1+parseFloat(bandChange.simulatedValue))*
-                    (1+parseFloat(selectedSuburbChange));
-                    
-                    //if value has not changed
-                    if(newVal != 0){
-                        ele[brandName] = newVal;
-                    } else {
-                        ele[brandName] = ele[brandName];
-                    }
-                    
+                            // if value has not changed
+                            if(newVal != 0){
+                                ele[brandName] = newVal;
+                            } else {
+                                ele[brandName] = ele[brandName];
+                            }
+                        }
+                    });
                 }
+                newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV});
             });
-            selectedSiBandChange.forEach((bandChange, index) => {
-                if(ele.siBand == bandChange.siBand) {
-                    // get new value of simulation
-                    newVal = newVal*
-                    (1+parseFloat(bandChange.simulatedValue))*
-                    (1+parseFloat(selectedSuburbChange));
-
-                    // if value has not changed
-                    if(newVal != 0){
-                        ele[brandName] = newVal;
-                    } else {
-                        ele[brandName] = ele[brandName];
-                    }
-                }
-            });
-            newDocs.push({"AAMI":ele.AAMI, "Allianz": ele.Allianz, "Bingle": ele.Bingle, "Coles": ele.Coles, "RACV": ele.RACV});
-        });
+        
         // get ranks
         const ranksArray = sharedFunctions.createRankDb(newDocs);
 
