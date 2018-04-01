@@ -96,7 +96,6 @@ apiRouter.post('/getSimulatedAgeQtesWins', (req, res) => {
 apiRouter.post('/getSimulatedSiQtesWins', (req, res) => {
   conn.db.collection('simulatedSiQtesWins').find().toArray()
   .then(docs => {
-    console.log(docs);
       simulatedSiQtesWinsResult = docs.filter(value => value.brand == req.body.brandName);
       res.send(simulatedSiQtesWinsResult);
   });
