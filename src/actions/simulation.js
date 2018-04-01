@@ -8,4 +8,44 @@ export const getSimulatedPremiumWins = () => {
         payload : response
     });
   }
+
   
+
+export const getSimulatedAgeQtesWins = (brandName) => {
+    var data = {brandName:brandName};
+    let response = fetch('/api/getSimulatedAgeQtesWins', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then((res) => res.json())
+    .then(val => val);
+
+    return({
+        type : 'GET_SIMULATED_AGE_QTES_WINS',
+        payload : response
+    });
+}
+
+
+export const getSimulatedSiQtesWins = (brandName) => {
+    var data = {brandName:brandName};
+    let response = fetch('/api/getSimulatedSiQtesWins', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then((res) => res.json())
+    .then(val => val);
+
+    return({
+        type : 'GET_SIMULATED_SI_QTES_WINS',
+        payload : response
+    });
+}

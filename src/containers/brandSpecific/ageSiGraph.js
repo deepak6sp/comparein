@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { VictoryBar, VictoryLine, VictoryChart, VictoryAxis, VictoryScatter,
         VictoryTheme, VictoryStack, VictoryGroup, VictoryTooltip} from 'victory';
 
-const AgeQtesWins = (props) => (
+const AgeSiGraph = (props) => (
 
               <VictoryChart
                 domainPadding={30}
@@ -56,4 +56,4 @@ const AgeQtesWins = (props) => (
       );
 
 // Bind actions, states and component to the store
-export default AgeQtesWins;
+export default AgeSiGraph;

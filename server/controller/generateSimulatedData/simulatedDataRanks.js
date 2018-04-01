@@ -11,7 +11,7 @@ const generateSimulatedDataRanks = (data) => {
 
     // let selectedAgeBandChange = [data.ageBandChnage];
     // let selectedSiBandChange = [data.siBandChange];
-    let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0.5},{ageBand: '45-54', simulatedValue: 0.5}];
+    let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0},{ageBand: '45-54', simulatedValue: 0}];
     let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: 0}]
     let selectedSuburbChange = 0;
     let brandName = 'AAMI';

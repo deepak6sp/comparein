@@ -9,7 +9,13 @@
 export default function(state = [], action) {
     switch (action.type) {
         case 'GET_SIMULATED_PREMIUM_WINS':
-            return [...state, action.payload];
+            return action.payload;
+            break;
+        case 'GET_SIMULATED_AGE_QTES_WINS':
+            return action.payload;
+            break;
+        case 'GET_SIMULATED_SI_QTES_WINS':
+            return action.payload;
             break;
         default:
             return state;
