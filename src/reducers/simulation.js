@@ -7,15 +7,25 @@
  * @return {Array}             a new state
  */
 export default function(state = [], action) {
+    
     switch (action.type) {
+        case 'CLEAR_REDUX_STORE':
+            state = [];
+            break;
         case 'GET_SIMULATED_PREMIUM_WINS':
-            return action.payload;
+            return [state, {marketSummary: action.payload}];
             break;
         case 'GET_SIMULATED_AGE_QTES_WINS':
-            return action.payload;
+            return [state, {ageQtes: action.payload}];
             break;
         case 'GET_SIMULATED_SI_QTES_WINS':
-            return action.payload;
+            return [state, {siQtes: action.payload}];
+            break;
+        case 'GET_EDIT_SIMULATED_AGE_QTES_WINS':
+            return [...state, {ageQtes: action.payload}];
+            break;
+        case 'GET_EDIT_SIMULATED_SI_QTES_WINS':
+            return [...state, {siQtes: action.payload}];
             break;
         default:
             return state;

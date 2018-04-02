@@ -37,6 +37,7 @@ class AgeQuotes extends Component {
         });
             
         this.setState({ ageBands: newAgeBands });
+        console.log(newAgeBands);
 
         // pass back to parent - simulation.js
         this.props.onAgeBandChanges(newAgeBands);
@@ -47,7 +48,9 @@ class AgeQuotes extends Component {
     }
     
     _handleRemoveAgeBand(idx) {
-        this.setState({ ageBands: this.state.ageBands.filter((s, sidx) => idx !== sidx) });
+        if(idx != 0) {
+            this.setState({ ageBands: this.state.ageBands.filter((s, sidx) => idx !== sidx) });
+        }
     }
 
     render() {
@@ -75,6 +78,11 @@ class AgeQuotes extends Component {
             YquotedPremiumOrRelativityText: ''
         }
 
+        // console.log("this.props.simulatedResults");
+        // console.log(this.props.simulatedResults);
+        // console.log("this.props.brandSpecificDetails");
+        // console.log(this.props.brandSpecificDetails);
+
         if(this.props.brandSpecificDetails.length == 2) {
 
             let i=0, j=0, k=0, l=0;
@@ -83,13 +91,13 @@ class AgeQuotes extends Component {
     
                 if(element.ageQtes) {
                     element.ageQtes.map(ele => {
-                    if(ele.rank == this.state.ageBasedRank) {
-                        ageQtesAndRel.numberOfQuotes.push({"count": ++i, "quotes": ele.quotes});
-                        ageQtesAndRel.numberOfWins.push({"count": i, "wins": ele.wins});
-                        ageQtesAndRel.quotedPremium.push({"count": i, "quotedPremium": parseInt(ele.asp)});
-                        ageQtesAndRel.XaxisDisplayText.push(ele.ageBand);
-                        ageQtesAndRel.numberOfDisplayBars.push(i);
-                    }
+                        if(ele.rank == this.state.ageBasedRank) {
+                            ageQtesAndRel.numberOfQuotes.push({"count": ++i, "quotes": ele.quotes, label:  "quotes "+ele.quotes});
+                            ageQtesAndRel.numberOfWins.push({"count": i, "wins": ele.wins, label: "Actual wins "+ele.wins});
+                            ageQtesAndRel.quotedPremium.push({"count": i, "quotedPremium": parseInt(ele.asp)});
+                            ageQtesAndRel.XaxisDisplayText.push(ele.ageBand);
+                            ageQtesAndRel.numberOfDisplayBars.push(i);
+                        }
                     });
                 }
                 
@@ -97,16 +105,18 @@ class AgeQuotes extends Component {
 
             // for simulation values
             let si=0, sj=0, sk=0, sl=0;
-            this.props.simulatedResults.map(ele => {
-    
-                if(ele.rank == this.state.ageBasedRank) {
-                    simulatedAgeQtesAndRel.numberOfQuotes.push({"count": ++si, "quotes": ele.quotes});
-                    simulatedAgeQtesAndRel.numberOfWins.push({"count": si, "wins": ele.wins});
-                    simulatedAgeQtesAndRel.quotedPremium.push({"count": si, "quotedPremium": parseInt(ele.asp)});
-                    simulatedAgeQtesAndRel.XaxisDisplayText.push(ele.ageBand);
-                    simulatedAgeQtesAndRel.numberOfDisplayBars.push(si);
+            this.props.simulatedResults.map(element => {
+                if(element.ageQtes) {
+                    element.ageQtes.map(ele => {
+                        if(ele.rank == this.state.ageBasedRank) {
+                            simulatedAgeQtesAndRel.numberOfQuotes.push({"count": ++si, "quotes": ele.quotes});
+                            simulatedAgeQtesAndRel.numberOfWins.push({"count": si, "wins": ele.wins, label: "Simulated wins "+ele.wins});
+                            simulatedAgeQtesAndRel.quotedPremium.push({"count": si, "quotedPremium": parseInt(ele.asp)});
+                            simulatedAgeQtesAndRel.XaxisDisplayText.push(ele.ageBand);
+                            simulatedAgeQtesAndRel.numberOfDisplayBars.push(si);
+                        }
+                    });
                 }
-                
             });
 
             const ageBandsAvailable= ['Select Age Group', 'Below 25', '25-34', '35-44', '45-54', '55-64', '65-74', '75 Plus']
@@ -131,17 +141,15 @@ class AgeQuotes extends Component {
                                     <input
                                         id={id}
                                         type="text"
-                                        placeholder={`age band value in %`}
+                                        placeholder={`value`}
                                         value={ageBandSingle.simulatedValue}
-                                        onChange={this._handleAgeBandValue.bind(this,id)}/>% 
-                                    <button type="button" onClick={this._handleRemoveAgeBand.bind(this,id)} className="small">-</button>
-                                    
+                                        onChange={this._handleAgeBandValue.bind(this,id)}/>
+                                    <span>%</span>
+                                    <button type="button" onClick={this._handleAddAgeBand.bind(this)} className="add-age-band">+</button>
+                                    <button type="button" onClick={this._handleRemoveAgeBand.bind(this,id)} className="remove-age-band">-</button>
                                 </div>
                             )})
                         }
-                        
-                        <button type="button" onClick={this._handleAddAgeBand.bind(this)} className="small">Add Age Band</button>
-                        
                     </div>
                     }
                     <AgeSiGraph
@@ -161,7 +169,7 @@ class AgeQuotes extends Component {
                 </div>
             )
         } else {
-            return <div> Generating Graph </div>
+            return <div> Generating Graph ... </div>
         }
         
     }

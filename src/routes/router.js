@@ -17,7 +17,7 @@ const Router = () =>
           <Route path="/login" component={ () => <LoginForm/> }/>
           <Route path="/market-summary" component={() => <MarketSummary/> } />
           <Route path="/brand-specific" component={BranchSpecific} />
-          <Route path="/simulation/market-summary" component={Simulation} />
+          <Route path="/simulation" component={Simulation} />
           <Route path="/admin" component={() => <LoginForm loginType='admin'/> } />
        </div>
     </BrowserRouter>;

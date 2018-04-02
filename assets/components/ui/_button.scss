@@ -8,4 +8,7 @@ a.button {
     text-decoration: none;
     display: flex;
     align-items: center;
+    &:hover {
+        cursor: pointer;
+    }
 } 

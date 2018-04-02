@@ -21,8 +21,9 @@ const AgeSiGraph = (props) => (
 
           <VictoryBar
             style={{
-              data: { fill: "#1f4b47", width: 40 }
+              data: { fill: "#666", width: 40 }
             }}
+            labelComponent={<VictoryTooltip/>}
             data={props.numberOfQuotes}
             x="count"
             y="quotes" />
@@ -31,6 +32,7 @@ const AgeSiGraph = (props) => (
               style={{
                 data: { fill: "#4DB6AC", width: 40 }
               }}
+              labelComponent={<VictoryTooltip/>}
               data={props.numberOfWins}
               x="count"
               y="wins" />
@@ -39,6 +41,7 @@ const AgeSiGraph = (props) => (
               style={{
                 data: { width: 40, stroke: "#000000", strokeWidth: 3, fillOpacity:0.1 }
               }}
+              labelComponent={<VictoryTooltip/>}
               data={props.simulatedNumberOfWins}
               x="count"
               y="wins" />

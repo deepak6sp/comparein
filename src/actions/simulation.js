@@ -63,3 +63,51 @@ export const generateSimulatedDataRanks = (data) => {
         body: JSON.stringify(data)
     });
 }
+
+// in edit mode
+export const getEditSimulatedAgeQtesWins = (brandName) => {
+    var data = {brandName:brandName};
+    let response = fetch('/api/getSimulatedAgeQtesWins', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then((res) => res.json())
+    .then(val => val);
+
+    return({
+        type : 'GET_EDIT_SIMULATED_AGE_QTES_WINS',
+        payload : response
+    });
+}
+
+
+export const getEditSimulatedSiQtesWins = (brandName) => {
+    var data = {brandName:brandName};
+    let response = fetch('/api/getSimulatedSiQtesWins', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then((res) => res.json())
+    .then(val => val);
+
+    return({
+        type : 'GET_EDIT_SIMULATED_SI_QTES_WINS',
+        payload : response
+    });
+}
+
+
+export const clearReduxStore = () => {
+    return({
+        type : 'CLEAR_REDUX_STORE',
+        payload : ''
+    });
+}

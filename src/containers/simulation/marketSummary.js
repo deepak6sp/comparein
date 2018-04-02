@@ -21,13 +21,14 @@ class MarketSummary extends Component {
             let simulatedNumberOfWins = [];
             let simulatedBrandNames = [];
             let simulatedNumberOfDisplayBars = [];
+
   
-            if(this.props.simulatedResults.length != 0) {
-              this.props.simulatedResults.forEach((ele,i) => {
-                simulatedBrandNames.push(ele.brand);
-                simulatedNumberOfDisplayBars.push(i++);
-                simulatedNumberOfWins.push({'brand':ele.brand,'wins':ele.wins, label:  "wins "+ele.wins});
-              })
+            if(this.props.simulatedResults) {
+                this.props.simulatedResults.forEach((ele,i) => {
+                    simulatedBrandNames.push(ele.brand);
+                    simulatedNumberOfDisplayBars.push(i++);
+                    simulatedNumberOfWins.push({'brand':ele.brand,'wins':ele.wins, label:  "wins "+ele.wins});
+                })
             }
             return (
                 <VictoryChart  animate={{ delay: 0, duration: 500, easing: "bounce" }}>
