@@ -9,7 +9,7 @@ const generateSimulatedDataRanks = (data) => {
     console.log('generateSimulatedDataRanks');
     console.log(data);
 
-    // let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0},{ageBand: '25-34', simulatedValue: 0}];
+    //let selectedAgeBandChange = [{ageBand: 'Below 25', simulatedValue: 0.05},{ageBand: '25-34', simulatedValue: 0.05}];
     // let selectedSiBandChange = [{siBand: 'Below 5K', simulatedValue: 0}];
     
     let selectedAgeBandChange = data.ageBandChanges;
@@ -31,7 +31,7 @@ const generateSimulatedDataRanks = (data) => {
                         if(ele.ageBand == bandChange.ageBand) {
                             // get new value of simulation
                             newVal = ele[brandName]*
-                            (1+parseFloat(bandChange.simulatedValue))*
+                            (1+parseFloat( (bandChange.simulatedValue/100) ))*
                             (1+parseFloat(selectedSuburbChange));
                             
                             //if value has not changed
@@ -47,7 +47,7 @@ const generateSimulatedDataRanks = (data) => {
                         if(ele.siBand == bandChange.siBand) {
                             // get new value of simulation
                             newVal = newVal*
-                            (1+parseFloat(bandChange.simulatedValue))*
+                            (1+parseFloat( (bandChange.simulatedValue/100) ))*
                             (1+parseFloat(selectedSuburbChange));
 
                             // if value has not changed

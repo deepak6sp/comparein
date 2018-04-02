@@ -28,9 +28,9 @@ class Simulation extends Component {
         }
     }
 
-    componentWillMount() {
-      generateSimulatedDataRanks({ageBandChanges: 'reset'});
-    }
+    // componentWillMount() {
+    //   generateSimulatedDataRanks({ageBandChanges: 'reset'});
+    // }
 
     componentDidMount() {
       this.props.getPremiumWins();

@@ -39,7 +39,7 @@ const AgeSiGraph = (props) => (
 
           <VictoryBar
               style={{
-                data: { width: 40, stroke: "#000000", strokeWidth: 3, fillOpacity:0.1 }
+                data: { width: 40, stroke: "#000000", strokeWidth: 1, fillOpacity:0.1 }
               }}
               labelComponent={<VictoryTooltip/>}
               data={props.simulatedNumberOfWins}

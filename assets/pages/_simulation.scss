@@ -41,4 +41,19 @@
             }
         }
     }
+    button.save-form {
+        font-size: $font-main;
+        border-radius: 0.2rem;
+        height: 3rem;
+        padding: 0rem 1rem;
+        background-color: $color-primary;
+        margin-bottom: 5rem;
+        color:black;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

@@ -64,7 +64,7 @@ class EditSimulation extends Component {
                     onSiBandChanges = {this._handleOnSiBandChanges.bind(this)}/>
 
                 <form onSubmit={this._handleSubmit.bind(this)}>
-                    <button>Save</button>
+                    <button className='save-form'>Save Values</button>
                 </form>
 
                 </section>
