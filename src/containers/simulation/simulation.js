@@ -28,8 +28,11 @@ class Simulation extends Component {
         }
     }
 
+    componentWillMount() {
+      generateSimulatedDataRanks({ageBandChanges: 'reset'});
+    }
+
     componentDidMount() {
-      //this.props.generateSimulatedDataRanks({ageBandChanges: 'reset'});
       this.props.getPremiumWins();
       this.props.generateAgeQtesWinsApi('AAMI');
       this.props.generateSiQtesWinsApi('AAMI');
@@ -77,14 +80,6 @@ class Simulation extends Component {
     _handleOnSiBandChanges(siBandChanges) {
       this.setState({siBandChanges});
     }
-
-    // _handleSubmit(e) {
-    //   e.preventDefault();
-    //   console.log("in simulationjs");
-    //   console.log(this.state.ageBandChanges);
-    //   generateSimulatedDataRanks({ageBandChanges: this.state.ageBandChanges});
-    //   window.location.reload(true);
-    // }
 
     _handleEdit() {
       this.props.clearReduxStore();
