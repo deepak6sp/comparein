@@ -19,8 +19,10 @@ const generateRawDataRanks = () => {
 
         conn.db.collection('rawData').find({}).toArray()
         .then(rdDocs => {
+            
             let newRawData = [];
             rdDocs.forEach((doc,index) => {
+                sharedFunctions.assignAgeGroupAndSiGroup(doc);
                 newRawData.push(Object.assign(doc, ranksArray[index]));
             });
             conn.db.collection('rawDataRanks').deleteMany({})

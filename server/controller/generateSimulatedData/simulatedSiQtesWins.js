@@ -10,11 +10,11 @@ const generateSimulatedSiQtesWins = () => {
             brandNames.forEach((ele,index) => {
                 conn.db.collection('simulatedDataRanks').aggregate([
                     {"$group" : {
-                        "_id":{"brand": ele, "siBand": "$siBand", "rank":`${"$"+ele+"Rank"}`},
+                        "_id":{"brand": ele, "siBand": "$siBand", "rank":`${"$"+ele+"Rank"}`, "siGroup": "$siGroup"},
                         wins: {$sum: 1}, asp: {$avg:`${"$"+ele}`},
                     }},
                     {"$project" : {
-                        "_id":0, "brand": "$_id.brand", "siBand": "$_id.siBand", 
+                        "_id":0, "brand": "$_id.brand", "siBand": "$_id.siBand", "siGroup": "$_id.siGroup",
                         "rank": "$_id.rank", wins:"$wins", asp: "$asp", 
                     }},
                 ]).toArray()

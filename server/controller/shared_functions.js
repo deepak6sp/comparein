@@ -87,5 +87,63 @@ module.exports =  {
         });
   
         return premiumWins;
+      },
+
+      assignAgeGroupAndSiGroup: (doc) => {
+        
+        switch(doc.ageBand) {
+          case 'Below 25':
+            doc.ageGroup = 1;
+            break;
+          case '25-34':
+            doc.ageGroup = 2;
+            break;
+          case '35-44':
+            doc.ageGroup = 3;
+            break;
+          case '45-54':
+            doc.ageGroup = 4;
+            break;
+          case '55-64':
+            doc.ageGroup = 5;
+            break;
+          case '65-74':
+            doc.ageGroup = 6;
+            break;
+          case '75 Plus':
+            doc.ageGroup = 7;
+            break;
+          default :
+            break;
+        }
+
+        switch(doc.siBand) {
+          case 'Below 5K':
+            doc.siGroup = 1;
+            break;
+          case '5K-10K':
+            doc.siGroup = 2;
+            break;
+          case '10K-20K':
+            doc.siGroup = 3;
+            break;
+          case '20K-30K':
+            doc.siGroup = 4;
+            break;
+          case '30K-40K':
+            doc.siGroup = 5;
+            break;
+          case '40K-60K':
+            doc.siGroup = 6;
+            break;
+          case '60K Plus':
+            doc.siGroup = 7;
+            break;
+          default :
+            break;
+        }
+
+        return doc;
+          
       }
   }

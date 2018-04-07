@@ -67,6 +67,7 @@ const generateSimulatedDataRanks = (data) => {
 
         let newSimulatedData = [];
         rdrDocs.forEach((doc,index) => {
+            sharedFunctions.assignAgeGroupAndSiGroup(doc);
             newSimulatedData.push(Object.assign(doc, ranksArray[index]));
         });
 

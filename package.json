@@ -50,6 +50,7 @@
     "jsdom": "9.0.0",
     "mocha": "^3.3.0",
     "node-sass": "^4.5.2",
+    "nodemon": "^1.17.3",
     "react-addons-test-utils": "^15.5.1",
     "react-hot-loader": "3.0.0-beta.1",
     "react-svg-loader": "^2.1.0",

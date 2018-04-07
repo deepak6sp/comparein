@@ -104,4 +104,37 @@ apiRouter.post('/getSimulatedSiQtesWins', (req, res) => {
 });
 
 
+apiRouter.post('getInitialAndSimulatedData', (req,res) => {
+  let initialPMPromise = new Promise((resolve,request) => {
+    conn.db.collection('premiumWins').find().toArray()
+    .then(docs => resolve(docs));
+  })
+  initialPMPromise.then(initialPMPromiseDocs => {
+    conn.db.collection('simulatedPremiumWins').find().toArray()
+    .then(docs => res.send({
+        marketSummary: {
+          intialData: initialPMPromiseDocs,
+          simulatedData: docs
+        }
+      }
+    ));
+  });
+}).get('/getInitialAndSimulatedData', (req, res) => {
+  let initialPMPromise = new Promise((resolve,request) => {
+    conn.db.collection('premiumWins').find().toArray()
+    .then(docs => resolve(docs));
+  })
+  initialPMPromise.then(initialPMPromiseDocs => {
+    conn.db.collection('simulatedPremiumWins').find().toArray()
+    .then(docs => res.send({
+        marketSummary: {
+          intialData: initialPMPromiseDocs,
+          simulatedData: docs
+        }
+      }
+    ));
+  });
+});;
+
+
 module.exports = apiRouter;
