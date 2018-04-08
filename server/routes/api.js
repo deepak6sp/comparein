@@ -134,7 +134,97 @@ apiRouter.post('getInitialAndSimulatedData', (req,res) => {
       }
     ));
   });
-});;
+});
+
+
+apiRouter.post('/getInitialAndSimulatedAgeQtesWins', (req, res) => {
+  let initialPromise = new Promise((resolve, request) => {
+    conn.db.collection('ageQtesWins').find().toArray()
+    .then(docs => {
+       ageQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+       resolve(ageQtesWinsResult);
+    });
+  }); 
+
+  initialPromise.then(initialPromiseDocs => {
+    
+    conn.db.collection('simulatedAgeQtesWins').find().toArray()
+    .then(docs => {
+        simulatedAgeQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        res.send({
+          ageQtesWins: {
+            initialData: initialPromiseDocs,
+            simulatedData: simulatedAgeQtesWinsResult
+          }
+        });
+    });
+  });
+}).get('/getInitialAndSimulatedAgeQtesWins', (req, res) => {
+  let initialPromise = new Promise((resolve, request) => {
+    conn.db.collection('ageQtesWins').find().toArray()
+    .then(docs => {
+       ageQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+       resolve(ageQtesWinsResult);
+    });
+  }); 
+
+  initialPromise.then(initialPromiseDocs => {
+    conn.db.collection('simulatedAgeQtesWins').find().toArray()
+    .then(docs => {
+        simulatedAgeQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        res.send({
+          ageQtesWins: {
+            initialData: initialPromiseDocs,
+            simulatedData: simulatedAgeQtesWinsResult
+          }
+        });
+    });
+  });
+});
+
+apiRouter.post('/getInitialAndSimulatedSiQtesWins', (req, res) => {
+  let initialPromise = new Promise((resolve, request) => {
+    conn.db.collection('siQtesWins').find().toArray()
+    .then(docs => {
+        simulatedSiQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        resolve(simulatedSiQtesWinsResult);
+    });
+  });
+
+  initialPromise.then(initialPromiseDocs => {
+    conn.db.collection('simulatedSiQtesWins').find().toArray()
+    .then(docs => {
+        simulatedSiQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        res.send({
+          siQtesWins: {
+            initialData: initialPromiseDocs,
+            simulatedData: simulatedSiQtesWinsResult
+          }
+        });
+    });
+  });
+}).get('/getInitialAndSimulatedSiQtesWins', (req, res) => {
+  let initialPromise = new Promise((resolve, request) => {
+    conn.db.collection('siQtesWins').find().toArray()
+    .then(docs => {
+        simulatedSiQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        resolve(simulatedSiQtesWinsResult);
+    });
+  });
+
+  initialPromise.then(initialPromiseDocs => {
+    conn.db.collection('simulatedSiQtesWins').find().toArray()
+    .then(docs => {
+        simulatedSiQtesWinsResult = docs.filter(value => value.brand == "AAMI");
+        res.send({
+          siQtesWins: {
+            initialData: initialPromiseDocs,
+            simulatedData: simulatedSiQtesWinsResult
+          }
+        });
+    });
+  });
+});
 
 
 module.exports = apiRouter;
